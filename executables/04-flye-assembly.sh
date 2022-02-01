@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account=rrg-ziels
 #SBATCH --cpus-per-task=16
-#SBATCH --mem-per-cpu=64G
+#SBATCH --mem-per-cpu=150G
 #SBATCH --time=1-12:0
 #SBATCH --job-name=04-flye-assembly
 #SBATCH --output=%x.out
@@ -21,7 +21,7 @@ source ${conda_path}/activate ${flye_path}
 mkdir ${outpath}
 
 #run flye
-flye --nano-corr ${inpath}/AD_SIP_trimmed_combined.fastq -o $outpath -t 16 --meta --scaffold --min-overlap 10000
+flye --nano-hq ${inpath}/AD_SIP_trimmed_combined.fastq -o $outpath -t 16 --meta --scaffold
 
 #get mapping stats
 module load minimap2/2.17
