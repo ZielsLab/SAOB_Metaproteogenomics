@@ -38,8 +38,8 @@ ch4_plot <- ggplot(ch4,
   scale_fill_viridis(discrete = TRUE,  option = "D") +
   ylab("Cumulative methane production (mL)") + 
   xlab("Time (hrs)") + 
-  theme_bw() + theme(legend.position = "none")
-
+  theme_pubr()
+ch4_plot
 
 # vfa concentration
 vfa_plot <- ggplot(meta %>% 
@@ -53,7 +53,7 @@ vfa_plot <- ggplot(meta %>%
   scale_fill_viridis(discrete = TRUE,  option = "D") +
   ylab("Acetate concentration (mg/L)") + 
   xlab("Time (hrs)") +
-  theme_bw() 
+  theme_pubr()
 
 ggsave("figures/cumulative_ch4_plot_sip_timeseries.png", ch4_plot, width=12, height=8, units=c("cm"))
 
@@ -83,3 +83,8 @@ saob_grid <- plot_grid(
 )
 
 ggsave("figures/saob_sip_experiment_metadata_grid.png", saob_grid, width=15, height=12, units=c("cm"))
+
+# Arrange with ggpubr
+sip_experiment <- ggarrange(ch4_plot, vfa_plot, ncol=2, nrow=1, common.legend=TRUE, legend="bottom", widths=c(1,1.1), labels = c("A", "B"))
+
+ggsave("figures/SIP-experiment-grid-metadata.png", sip_experiment, width=20, height=12, units=c("cm"))
