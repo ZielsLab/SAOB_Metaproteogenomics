@@ -12,12 +12,12 @@
 project_path="/project/6049207/AD_metagenome-Elizabeth"
 bins_path="${project_path}/10_binning/bins"
 out_path="${project_path}/10_binning/checkM"
-checkm_path="/home/eamcdani/projects/rrg-ziels/shared_tools/virtual_envs/checkM/bin"
+checkm_path="/home/eamcdani/projects/rrg-ziels/shared_tools/virtual_envs/checkM/bin/activate"
 
 #prepare environment
-module load gcc python
+module load gcc python hmmer prodigal pplacer
 source ${checkm_path}
 
 # checkM commands
 checkm lineage_wf -x .fa -t 8 ${bins_path}/ ${out_path}
-checkm qa ${out_path}/lineage.ms -o 2 -f ${out_path}/checkmout --tab_table
+checkm qa ${out_path}/lineage.ms -o 2 -f ${out_path}/checkm.out --tab_table

@@ -1,0 +1,16 @@
+Bin Id                        Marker lineage            # genomes   # markers   # marker sets    0     1    2   3   4   5+   Completeness   Contamination   Strain heterogeneity
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  nanopore_v1-bin.27      p__Bacteroidetes (UID2605)         350         316           210         8    306   2   0   0   0       96.43            0.40               0.00
+  nanopore_v1-bin.42       p__Euryarchaeota (UID3)           148         188           125         5    183   0   0   0   0       96.00            0.00               0.00
+  nanopore_v1-bin.26        p__Firmicutes (UID241)           930         213           118         14   191   8   0   0   0       91.07            4.52              50.00
+  nanopore_v1-bin.4          k__Bacteria (UID203)            5449        102            56         6     95   1   0   0   0       91.07            1.79               0.00
+  nanopore_v1-bin.19        p__Firmicutes (UID239)           1324        176           102         11   164   1   0   0   0       90.69            0.49               0.00
+  nanopore_v1-bin.11        p__Firmicutes (UID241)           930         213           118         15   196   2   0   0   0       90.68            1.69               0.00
+  nanopore_v1-bin.15      o__Clostridiales (UID1120)         304         250           143         24   226   0   0   0   0       90.63            0.00               0.00
+  nanopore_v1-bin.31        p__Firmicutes (UID239)           1324        175           101         11   163   1   0   0   0       90.59            0.99               0.00
+  nanopore_v1-bin.13      o__Clostridiales (UID1226)         155         278           158         31   246   1   0   0   0       90.35            0.21              100.00
+  nanopore_v1-bin.18        k__Bacteria (UID1452)            924         163           110         22   139   2   0   0   0       82.73            1.82               0.00
+  nanopore_v1-bin.25         k__Bacteria (UID209)            5443        105            59         29    76   0   0   0   0       81.09            0.00               0.00
+  nanopore_v1-bin.12        p__Firmicutes (UID241)           930         213           118         37   175   1   0   0   0       77.97            0.42               0.00
+  nanopore_v1-bin.39       p__Euryarchaeota (UID3)           148         188           125         32   147   9   0   0   0       76.40            1.29              77.78
+  nanopore_v1-bin.33        p__Firmicutes (UID239)           1324        176           102         32   142   2   0   0   0       75.49            0.74              100.00

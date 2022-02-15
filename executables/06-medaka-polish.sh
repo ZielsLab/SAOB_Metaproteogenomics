@@ -12,10 +12,12 @@
 
 #paths
 project_path="/project/6049207/AD_metagenome-Elizabeth"
-medaka_path="/project/6049207/shared_tools/virtual_envs/medaka_v1.4.3/bin/activate"
-read_path="${project_path}/illumina_raw/MV_MicrOnline_Nov_Dec2021-porechop_trimmed.fastq"
-inpath="${project_path}/04_racon_polish"
-outpath="${project_path}/05_medaka_polish"
+read_path="${project_path}/03_porechop_trimmed/AD_SIP_trimmed_combined.fastq"
+medaka_path="/project/6049207/shared_tools/virtual_envs/medaka_v1.5/bin/activate"
+inpath="${project_path}/05_racon_polish"
+outpath="${project_path}/06_medaka_polish"
+#model_path="/project/6049207/shared_tools/medaka_models/r104_e81_sup_g5015_model.tar.gz"
+model_path="r104_e81_sup_g5015"
 
 #prepare environment
 module load gcc python bcftools minimap2 samtools
@@ -24,9 +26,9 @@ source ${medaka_path}
 
 #run medaka
 medaka_consensus -i ${read_path} \
-	-d ${inpath}/assembly_racon_x1.fasta \
-	-o $outpath \
-	-m r941_min_sup_g507 \
-	-t 24
+    -d ${inpath}/assembly_racon_x1.fasta \
+    -o $outpath \
+    -m ${model_path} \
+    -t 24
 
 deactivate
