@@ -43,6 +43,7 @@ anvio_bins_depth <- left_join(anvio_bins_scaffolds, depth_file)
 
 anvio_sample_depth <- anvio_bins_depth %>% 
   select(bins, contigName, contigLen, R2Sept2020.sorted.bam) %>% 
+  drop_na() %>% 
   group_by(bins) %>% 
   summarise(totalLen = sum(contigLen), total_covg = sum(R2Sept2020.sorted.bam), rel_abundance = mean(R2Sept2020.sorted.bam)) %>% 
   arrange(desc(totalLen))
@@ -80,3 +81,21 @@ anvio_bins_all_samples_depth_plot <- anvio_all_samples_depths_info %>%
 
 anvio_bins_all_samples_depth_plot
 ggsave("figures/anvio-prelim-bins-all-samples-depth.png", anvio_bins_all_samples_depth_plot, width=20, height=15, units=c("cm"))
+
+# Preliminary anvio bins check w/ checkM stats and GTDB classification
+# Anvio bins from unpolished Nanopore assembly 
+
+checkm_stats <- read_tsv("results/anvio_binning/checkm_stats.tsv")
+gtdb_stats <- read_tsv("results/anvio_binning/all_classf_results.tsv")
+colnames(gtdb_stats)[1] <- c("Bin")
+
+saob_anvio_table <- left_join(gtdb_stats, checkm_stats)
+
+saob_bins_modf <- saob_anvio_table %>% 
+  mutate(bins = gsub("-contigs", "", Bin)) %>% 
+  select(bins, classification, Completeness, Contamination, Size, Contigs, GC)
+
+saob_bins_covg_table <- left_join(saob_bins_modf, anvio_sample_depth)
+
+saob_bins_covg_table %>% 
+  ggplot(aes(x=Completeness, y=Contamination)) + geom_point(aes(size=total_covg, color=classification)) + theme_pubr()
