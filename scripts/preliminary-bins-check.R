@@ -1,5 +1,7 @@
 library(tidyverse)
 library(ggpubr)
+library(stringr)
+library(viridis)
 
 #######################################
 # Preliminary binning stats and coverage 
@@ -35,7 +37,7 @@ metabat_bins_plot <- avg_depth_info %>% ggplot(aes(x=completeness, y=contaminati
 #######################################
 
 anvio_bins_stats <- read_tsv("results/preliminary_binning/anvio_binning/bins_summary.txt")
-anvio_bins_scaffolds <- read_tsv("results/preliminary_binning/anvio_binning/scaffolds-to-bins.tsv", col_names = FALSE)
+anvio_bins_scaffolds <- read_tsv("results/anvio_binning/all-scaffolds.tsv", col_names = FALSE)
 colnames(anvio_bins_scaffolds) <- c("bins", "contigName")
 anvio_bins_scaffolds$bins <- gsub("-contigs", "", anvio_bins_scaffolds$bins)
 
@@ -99,3 +101,57 @@ saob_bins_covg_table <- left_join(saob_bins_modf, anvio_sample_depth)
 
 saob_bins_covg_table %>% 
   ggplot(aes(x=Completeness, y=Contamination)) + geom_point(aes(size=total_covg, color=classification)) + theme_pubr()
+
+
+# Relative abundance for all R2 samples 
+
+total_r2_covg <- anvio_bins_depth %>% 
+  select(bins, R2Dec2019.sorted.bam, R2Feb2020.sorted.bam, R2Jan2020.sorted.bam, R2July2020.sorted.bam, R2Mar2020.sorted.bam, R2Nov2019.sorted.bam, R2Sept2020.sorted.bam) %>% 
+  mutate_if(is.double, as.integer) %>% 
+  pivot_longer(!bins, names_to="sample", values_to="covg") %>% 
+  group_by(sample) %>% 
+  drop_na() %>% 
+  summarise(total = sum(covg))
+
+r2_relative_abundance <- anvio_bins_depth %>% 
+  select(bins, R2Dec2019.sorted.bam, R2Feb2020.sorted.bam, R2Jan2020.sorted.bam, R2July2020.sorted.bam, R2Mar2020.sorted.bam, R2Nov2019.sorted.bam, R2Sept2020.sorted.bam) %>% 
+  drop_na() %>% 
+  mutate_if(is.double, as.integer) %>% 
+  group_by(bins) %>% 
+  summarise(across(where(is.numeric), sum)) %>% 
+  pivot_longer(!bins, names_to="sample", values_to="covg") %>% 
+  left_join(total_r2_covg) %>% 
+  group_by(bins, sample) %>% 
+  mutate(rel_abundance = (covg / total) * 100)
+
+write.csv(r2_relative_abundance, "results/anvio_binning/r2_relative_abundance_anvio_bins.csv", quote = FALSE, row.names = FALSE)
+
+anvio_prelim_bins_table <- r2_relative_abundance %>%
+  select(bins, sample, rel_abundance) %>% 
+  pivot_wider(names_from=sample, values_from = rel_abundance) %>% 
+  left_join(saob_bins_modf) %>% 
+  drop_na()
+
+write.csv(anvio_prelim_bins_table, "results/anvio_binning/anvio_bins_prelim_info.csv", quote = FALSE, row.names = FALSE)
+
+saob_bins_groups <- read.csv("results/anvio_binning/anvio_bins_prelim_info_groups.csv")
+r2_abund_table <- left_join(r2_relative_abundance, saob_bins_groups) %>% 
+  drop_na() %>% 
+  mutate(sample = gsub(".sorted.bam", "", sample)) %>% 
+  mutate(phylum = gsub(";c__.*", "", classification)) %>% 
+  mutate(phylum = gsub("d__Bacteria;", "", phylum)) %>% 
+  mutate(phylum = gsub("d__Archaea;", "", phylum)) %>% 
+  mutate(phylum = str_extract(phylum, "[^_]*_[^_]*_[^_]*"))
+  
+r2_abund_table$sample <- factor(r2_abund_table$sample, levels=c("R2Nov2019", "R2Dec2019", "R2Jan2020", "R2Feb2020", "R2Mar2020", "R2July2020", "R2Sept2020"))
+
+r2_relative_abundance_plot <- r2_abund_table %>% 
+  ggplot(aes(x=as_factor(sample), y=rel_abundance, fill=group)) +
+  geom_bar(stat="identity", color="black", size=0.3, width=0.8) +
+  theme_pubr() +
+  scale_y_continuous(expand=c(0,0)) +
+  scale_fill_brewer(palette="Set2") +
+  xlab("Sample") + ylab("Relative Abundance")
+r2_relative_abundance_plot
+
+ggsave("figures/r2_relative_abundance_anvio_bins.png", r2_relative_abundance_plot, width=50, height=15, units=c("cm"))
