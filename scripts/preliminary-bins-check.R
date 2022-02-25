@@ -154,4 +154,4 @@ r2_relative_abundance_plot <- r2_abund_table %>%
   xlab("Sample") + ylab("Relative Abundance")
 r2_relative_abundance_plot
 
-ggsave("figures/r2_relative_abundance_anvio_bins.png", r2_relative_abundance_plot, width=50, height=15, units=c("cm"))
+ggsave("figures/r2_relative_abundance_anvio_bins.png", r2_relative_abundance_plot, width=30, height=20, units=c("cm"))

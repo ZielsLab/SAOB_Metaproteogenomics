@@ -44,14 +44,21 @@ spectral_relative_abundance <- spectral_counts_12C_samples %>%
   mutate(phylum = gsub("d__Archaea;", "", phylum)) %>% 
   mutate(specificName = paste0(specificGroup, "_", bins))
 
-test <- spectral_relative_abundance %>% 
+spectral_counts_ab_plot <- spectral_relative_abundance %>% 
   ggplot(aes(x=rel_abundance, y=specificName, fill=group)) + 
   geom_boxplot() +
-  theme_pubr()
-test
+  theme_pubr() +
+  scale_fill_brewer(palette="Set2") + 
+  xlab("Relative Abudance of Protein Spectral Counts Across Time-Series") + ylab("Genome Name")
 
-ggsave("~/Desktop/test.png", test, width=30, height=15, units=c("cm"))
+
+ggsave("figures/spectral_counts_rel_abund_boxplot.png", spectral_counts_ab_plot, width=25, height=20, units=c("cm"))
 
 spectral_relative_abundance %>% 
   group_by(sample) %>% 
   summarise(sum = sum(rel_abundance))
+
+ad_saob_anvio_bins_grid <- ggarrange(r2_relative_abundance_plot, spectral_counts_ab_plot, ncol=1, nrow=2, common.legend = TRUE, legend = "bottom", labels=c("A", "B"), widths=c(2.5,2.5))
+ad_saob_anvio_bins_grid
+
+ggsave("figures/ad_saob_rel_ab_grid.png", ad_saob_anvio_bins_grid, width=20, height=25, units=c("cm"))
