@@ -2,6 +2,20 @@ library(tidyverse)
 library(ggpubr)
 library(stringr)
 library(viridis)
+library(readxl)
+library(lubridate)
+
+#######################################
+# Sampling dates for DNA  
+#######################################
+
+sampling_dates <- read_xlsx(path="metadata/EMSL-LS_DNA_Samples_2021_MWM.xlsx", sheet="Sheet1", col_names = TRUE)
+
+sampling_info <- sampling_dates %>%
+  mutate(Date = ymd(Date)) %>% 
+  mutate(operation_day = Date - first(Date)) %>% 
+  mutate(operation_day = as.factor(operation_day))
+
 
 #######################################
 # Preliminary binning stats and coverage 
@@ -69,19 +83,19 @@ anvio_all_sample_depths <- anvio_bins_depth %>%
   pivot_longer(!bins, names_to="sample", values_to="covg") %>% 
   mutate(sample = gsub(".sorted.bam", "", sample))
 
-anvio_all_samples_depths_info <- left_join(anvio_bins_stats, anvio_all_sample_depths)
+anvio_all_samples_depths_table <- left_join(anvio_bins_stats, anvio_all_sample_depths)
 
-anvio_all_samples_depths_info$sample <- factor(anvio_all_samples_depths_info$sample, levels=c("R1Nov2019", "R1Dec2019", "R1Jan2020", "R1Feb2020", "R1Mar2020", "R1July2020", "R1Sept2020", "R2Nov2019", "R2Dec2019", "R2Jan2020", "R2Feb2020", "R2Mar2020", "R2July2020", "R2Sept2020"))
+anvio_all_samples_depths_info <- left_join(anvio_all_samples_depths_table, sampling_info)
 
 anvio_bins_all_samples_depth_plot <- anvio_all_samples_depths_info %>% 
-  ggplot(aes(x=as_factor(sample), y=covg, fill=t_phylum)) +
+  ggplot(aes(x=as_factor(operation_day), y=covg, fill=t_phylum)) +
   geom_bar(stat="identity", color="black", size=0.3, width=0.8) +
   theme_pubr() +
   scale_y_continuous(expand=c(0,0)) + 
   theme(axis.text.x = element_text(angle = 85, vjust=0.5, hjust=0.5)) +
-  xlab("Sample") + ylab("Total Coverage")
-
+  xlab("Operation Day") + ylab("Total Coverage")
 anvio_bins_all_samples_depth_plot
+
 ggsave("figures/anvio-prelim-bins-all-samples-depth.png", anvio_bins_all_samples_depth_plot, width=20, height=15, units=c("cm"))
 
 # Preliminary anvio bins check w/ checkM stats and GTDB classification
@@ -145,13 +159,15 @@ r2_abund_table <- left_join(r2_relative_abundance, saob_bins_groups) %>%
   
 r2_abund_table$sample <- factor(r2_abund_table$sample, levels=c("R2Nov2019", "R2Dec2019", "R2Jan2020", "R2Feb2020", "R2Mar2020", "R2July2020", "R2Sept2020"))
 
-r2_relative_abundance_plot <- r2_abund_table %>% 
-  ggplot(aes(x=as_factor(sample), y=rel_abundance, fill=group)) +
+r2_abund_table_info <- left_join(r2_abund_table, sampling_info)
+
+r2_relative_abundance_plot <- r2_abund_table_info %>% 
+  ggplot(aes(x=as_factor(operation_day), y=rel_abundance, fill=group)) +
   geom_bar(stat="identity", color="black", size=0.3, width=0.8) +
   theme_pubr() +
   scale_y_continuous(expand=c(0,0)) +
   scale_fill_brewer(palette="Set2") +
-  xlab("Sample") + ylab("Relative Abundance")
+  xlab("Operation Day") + ylab("Relative Abundance")
 r2_relative_abundance_plot
 
 ggsave("figures/r2_relative_abundance_anvio_bins.png", r2_relative_abundance_plot, width=30, height=20, units=c("cm"))

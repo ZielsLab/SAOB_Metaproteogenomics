@@ -73,12 +73,13 @@ vfa_plot <- ggplot(meta %>%
 
 gas_plot <- gas_table %>% 
   ggplot(aes(x=hr, y=percent)) + 
-  geom_line(aes(color=ratio)) +
-  scale_color_manual(values = c("purple", "darkblue")) + 
+  geom_line(aes(color=ratio), size=1.2) +
+  scale_color_manual(values = c("purple", "darkblue"), labels = c("\n %13C-CO2 : %13C-CH4", "%-SAOB-pathway")) + 
   xlab("Time (hrs)") +
-  ylab("13CO2/13CH4 \n BG TIC corrected") + 
+  ylab("Ratio of %13C-CO2 : %13C-CH4, \n or fraction of CH4 from SAO pathway (%)") + 
   theme_pubr(legend="bottom") + 
-  labs(color = "parameter")
+  labs(color = "parameter") + 
+  theme(axis.title.y = element_text(size=10))
 gas_plot
 
 ggsave("figures/cumulative_ch4_plot_sip_timeseries.png", ch4_plot, width=12, height=8, units=c("cm"))
@@ -112,12 +113,15 @@ saob_grid <- plot_grid(
 ggsave("figures/saob_sip_experiment_metadata_grid.png", saob_grid, width=15, height=12, units=c("cm"))
 
 # Arrange with ggpubr
-sip_experiment <- ggarrange(ch4_plot, vfa_plot, ncol=2, nrow=1, common.legend=TRUE, legend="bottom", widths=c(1,1.1), labels = c("A", "B"))
+sip_experiment <- ggarrange(ch4_plot, vfa_plot, ncol=1, nrow=2, common.legend=TRUE, legend="bottom", widths=c(1,1.1), labels = c("A", "B"))
 
 ggsave("figures/SIP-experiment-grid-metadata.png", sip_experiment, width=20, height=12, units=c("cm"))
 
-gas_grid <- plot_grid(gas_plot, labels=c("C"))
+gas_grid <- plot_grid(gas_plot, labels=c("C"), label_y=1)
+gas_grid
 
-experiment_grid <- sip_experiment / gas_grid
+experiment_grid <- sip_experiment + gas_grid
+plot_grid(sip_experiment, gas_grid, nrow=2, ncol=1, rel_heights=c(1.5,2))
+experiment_grid
 
-ggsave('figures/experiment_grid.png', experiment_grid, width=18, height=20, units=c("cm"))
+ggsave('figures/IWA_AD_abstract/experiment_grid.png', experiment_grid, width=25, height=15, units=c("cm"))

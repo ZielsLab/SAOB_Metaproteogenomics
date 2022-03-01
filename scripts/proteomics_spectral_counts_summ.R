@@ -58,7 +58,7 @@ spectral_relative_abundance %>%
   group_by(sample) %>% 
   summarise(sum = sum(rel_abundance))
 
-ad_saob_anvio_bins_grid <- ggarrange(r2_relative_abundance_plot, spectral_counts_ab_plot, ncol=1, nrow=2, common.legend = TRUE, legend = "bottom", labels=c("A", "B"), widths=c(2.5,2.5))
+ad_saob_anvio_bins_grid <- ggarrange(r2_relative_abundance_plot, spectral_counts_ab_plot, ncol=2, nrow=1, common.legend = TRUE, legend = "bottom", labels=c("A", "B"), widths=c(2.5,2.3))
 ad_saob_anvio_bins_grid
 
-ggsave("figures/ad_saob_rel_ab_grid.png", ad_saob_anvio_bins_grid, width=20, height=25, units=c("cm"))
+ggsave("figures/IWA_AD_abstract/ad_saob_rel_ab_grid.png", ad_saob_anvio_bins_grid, width=40, height=15, units=c("cm"))
