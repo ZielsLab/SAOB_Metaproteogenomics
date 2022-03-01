@@ -1,3 +1,5 @@
+*.tre
+*.fasta
 *.faa
 ~$*
 *.Rproj

@@ -4,6 +4,8 @@ library(viridis)
 library(readxl)
 library(ggpubr)
 library(cowplot)
+library(gridExtra)
+library(patchwork)
 
 ## read in metadata from  spreadsheet, binding rows of each worksheet together
   # experimental values file path
@@ -19,7 +21,19 @@ library(cowplot)
     rbind(read_xlsx(path = meta_path, sheet = '312h', col_names = TRUE)) %>% 
     rbind(read_xlsx(path = meta_path, sheet = '408h', col_names = TRUE)) %>%
     left_join(read_xlsx(path = bottle_meta, col_names = TRUE), by = "bottle")
-    
+  
+  # IRMS gas analysis 
+  
+  gas_analysis <- read_xlsx(path = "raw_data/experiment_metadata/IRMS_gas_analysis.xlsx", sheet = "%SAOB_model", col_names = TRUE) %>% 
+    select(time_point, time_hr, `13CO2/13CH4 BG TIC corrected`, `%_SAO`)
+  
+colnames(gas_analysis) <- c("time_point", "hr", "CO2_CH4", "SAOB_model")
+
+gas_table <- gas_analysis %>% 
+  mutate(CO2_CH4 = CO2_CH4 * 100) %>% 
+  mutate(SAOB_model = SAOB_model * 100) %>% 
+  select(hr, CO2_CH4, SAOB_model) %>% 
+  pivot_longer(cols=!hr, names_to = "ratio", values_to = "percent")
 
 # calculate cumulative sum of methane over time in each bottle
   ch4 <- meta %>% group_by(bottle) %>%
@@ -36,7 +50,7 @@ ch4_plot <- ggplot(ch4,
   stat_summary(fun = "mean", geom = "line") +
   scale_color_viridis(discrete = TRUE, option = "D")+
   scale_fill_viridis(discrete = TRUE,  option = "D") +
-  ylab("Cumulative methane production (mL)") + 
+  ylab("Cumulative methane \n production (mL)") + 
   xlab("Time (hrs)") + 
   theme_pubr()
 ch4_plot
@@ -51,15 +65,28 @@ vfa_plot <- ggplot(meta %>%
   stat_summary(fun = "mean", geom = "line") +
   scale_color_viridis(discrete = TRUE, option = "D")+
   scale_fill_viridis(discrete = TRUE,  option = "D") +
-  ylab("Acetate concentration (mg/L)") + 
+  ylab("Acetate concentration \n (mg/L)") + 
   xlab("Time (hrs)") +
   theme_pubr()
+
+# Gas plot
+
+gas_plot <- gas_table %>% 
+  ggplot(aes(x=hr, y=percent)) + 
+  geom_line(aes(color=ratio)) +
+  scale_color_manual(values = c("purple", "darkblue")) + 
+  xlab("Time (hrs)") +
+  ylab("13CO2/13CH4 \n BG TIC corrected") + 
+  theme_pubr(legend="bottom") + 
+  labs(color = "parameter")
+gas_plot
 
 ggsave("figures/cumulative_ch4_plot_sip_timeseries.png", ch4_plot, width=12, height=8, units=c("cm"))
 
 ggsave("figures/vfa_degradation_sip_timeseries.png", vfa_plot, width=12, height=8, units=c("cm"))
 
 chem_grid <- plot_grid(ch4_plot, NULL, vfa_plot, nrow=1, labels = c("A", "", "B"), rel_widths = c(1.5, 0.05, 2))
+
 
 
 # now add the title
@@ -88,3 +115,9 @@ ggsave("figures/saob_sip_experiment_metadata_grid.png", saob_grid, width=15, hei
 sip_experiment <- ggarrange(ch4_plot, vfa_plot, ncol=2, nrow=1, common.legend=TRUE, legend="bottom", widths=c(1,1.1), labels = c("A", "B"))
 
 ggsave("figures/SIP-experiment-grid-metadata.png", sip_experiment, width=20, height=12, units=c("cm"))
+
+gas_grid <- plot_grid(gas_plot, labels=c("C"))
+
+experiment_grid <- sip_experiment / gas_grid
+
+ggsave('figures/experiment_grid.png', experiment_grid, width=18, height=20, units=c("cm"))
