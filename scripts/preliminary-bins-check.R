@@ -171,3 +171,27 @@ r2_relative_abundance_plot <- r2_abund_table_info %>%
 r2_relative_abundance_plot
 
 ggsave("figures/r2_relative_abundance_anvio_bins.png", r2_relative_abundance_plot, width=30, height=20, units=c("cm"))
+
+r2_abund_table_info$code <- paste0(r2_abund_table_info$specificGroup, "_", r2_abund_table_info$bins)
+
+r2_abund_table_info %>% 
+  select(code, operation_day, rel_abundance)
+  
+
+high_bins_list <- r2_abund_table_info %>% 
+  select(bins, sample, code, operation_day, rel_abundance) %>% 
+  filter(rel_abundance > 5) %>% 
+  pull(bins) %>% 
+  unique()
+
+top_heatmap <- r2_abund_table_info %>% 
+  filter(bins %in% high_bins_list) %>% 
+  ggplot(aes(x=as_factor(operation_day), y=code, fill=rel_abundance)) + 
+  geom_tile(color="white") + 
+  scale_fill_viridis(option="mako", begin=0, end=1, limits=c(0,40)) +
+  scale_x_discrete(expand=c(0,0)) +
+  scale_y_discrete(expand=c(0,0)) +
+  ylab("MAG") +
+  xlab("Operation Day")
+
+ggsave("figures/saob_top_lineages_heatmap.png", top_heatmap, width=16, height=10, units=c("cm"))
