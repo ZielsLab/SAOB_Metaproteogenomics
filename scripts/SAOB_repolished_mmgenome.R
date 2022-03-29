@@ -30,6 +30,9 @@ scg <- read.table(file=paste0(repolished_path, "scg-taxonomy.txt"), header=TRUE,
 # taxonomy from MEGAN 
 tax <- read.table(file=paste0(repolished_path, "megan_tax_modf.tsv"), sep="\t", col.names = c("contig", "taxonomy"))
 
+taxonomy_table <- tax %>% 
+  separate(taxonomy, into = c("database", "kingdom", "phylum", "class", "order", "family", "genus", "species"), sep=";") %>% 
+  filter(phylum != ' ')
 
 # read assembly as DNA String, filter short contigs
 assembly <- readDNAStringSet(contigs, format = "fasta")
@@ -47,7 +50,7 @@ mm <- mmload(
   assembly = assembly,
   coverage = ilm_reads_depth_filtered, 
   essential_genes = scg,
-  taxonomy = tax,
+  taxonomy = taxonomy_table,
   kmer_BH_tSNE = TRUE, 
   kmer_size = 4, 
   perplexity = 40, theta=0.5, max_iter = 2000
@@ -55,10 +58,11 @@ mm <- mmload(
 
 mmstats(mm)
 
+# initial plot
 mmplot(mm, 
        x = 'tSNE1',
        y = 'tSNE2',
-       color_by = "phylum", 
+       color_by = "class", 
        color_vector = scales::viridis_pal(option = "plasma")(3),
        #color_scale_log10 = TRUE,
        factor_shape = 'solid', 

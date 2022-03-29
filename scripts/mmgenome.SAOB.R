@@ -15,16 +15,12 @@ scg <- read.table(file=paste0(path, "contigs.db.hits"), header = TRUE, sep = "\t
   select(contig, geneID = gene) 
 tax <- read_csv(file=paste0(path, "contigs_megan_tax.csv"))
 
-
-
-
 # read assembly as DNA String, filter short contigs
 assembly <- readDNAStringSet(contigs, format = "fasta")
 list <- names(assembly)[which(width(assembly) >= 2000)] #filter out contigs less than 2000 bp
 assembly <- assembly[list]
 
-
-
+# mm object
 mm <- mmload(
   assembly = assembly,
   coverage = cov, 
@@ -38,7 +34,7 @@ mm <- mmload(
 mmstats(mm)
 #saveRDS(mm, file = paste0(path, "mm.RDS"))
 
-
+# initial plot
 mmplot(mm, 
        x = 'tSNE1',
        y = 'tSNE2',
