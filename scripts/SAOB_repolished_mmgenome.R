@@ -10,19 +10,23 @@ library(viridis)
 # Prepare files and mmgenome object
 #################################################################
 
-
 # project path and contigs
 repolished_path <- "results/polished_binning/"
 contigs <- paste0(repolished_path, "final_np_polished_contigs_modified.fasta")
 
-# SCG gene calls and taxonomy from Anvi'o 
+# SCG HMM hits and gene calls from Anvi'o
 gene_calls <- read.table(file=paste0(repolished_path, "scg-gene-calls.txt"), header=TRUE, sep="\t") %>% 
   select(gene_callers_id, contig)
 
-scg <- read.table(file=paste0(repolished_path, "scg-taxonomy.txt"), header=TRUE, sep="\t") %>% 
+hmm_hits_bacteria <- read.table(file=paste0(repolished_path, "hmm-hits-bacteria.txt"), header=TRUE, sep="\t") %>% 
   select(gene_callers_id, gene_name)
-# combine gene_calls and scg to get the contig that the essential gene is on
-scg_table <- left_join(scg, gene_calls) %>% 
+
+hmm_hits_archaea <- read.table(file=paste0(repolished_path, "hmm-hits-archaea.txt"), header=TRUE, sep="\t") %>% 
+  select(gene_callers_id, gene_name)
+
+all_hmm_hits <- rbind(hmm_hits_bacteria, hmm_hits_archaea)
+
+scg_table <- left_join(all_hmm_hits, gene_calls) %>% 
   select(contig, gene_name)
 
 # taxonomy from MEGAN 
@@ -86,19 +90,21 @@ mmplot(mm,
 # Selection 1 
 #################################
 
-selection1 <- data.frame(tSNE1 = c(7.628, 19.427, 18.733, 7.628),
-                         tSNE2 = c(-18.121, -18.844, -13.607, -13.246))
-# extract selection 1
+# Initial group selection
+selection1 <- data.frame(tSNE1 = c(-16.676, -16.453, -7.77, -10.219),
+                         tSNE2 = c(-34.187, -46.636, -48.199, -35.345))
+
+# extract subset
 mm_subset1 <- mmextract(mm, selection = selection1) 
 mmstats(mm_subset1)
 
-# plot pairings 
+# visualize pairings   
 mmplot_pairs(mm_subset1,
              variables = c("tSNE1",
                            "tSNE2",
                            "cov_R2Sept2020",
                            "cov_R2Nov2019",
-                           "cov_NPreads",
+                           "cov_R2Mar2020",
                            "gc"),
              color_by = "gc",
              alpha = 0.4,
@@ -106,8 +112,77 @@ mmplot_pairs(mm_subset1,
              textsize = 4,
              color_vector = scales::viridis_pal(option = "plasma")(3))
 
+
 # chose this plot to inspect
 mmplot(mm_subset1, 
+       x = 'cov_R2Sept2020',
+       y = 'cov_R2Mar2020',
+       color_by = "species", 
+       color_vector = scales::viridis_pal(option = "plasma")(3),
+       factor_shape = 'solid',
+       #color_scale_log10 = TRUE, 
+       #x_limits = c(38, 45),
+       #y_limits = c(0, 2000),
+       locator = TRUE,
+       #fixed_size = 5,
+       #selection = selection
+)
+
+#extract subsets as bins
+selection1.1 <- data.frame(cov_R2Sept2020 = c(14.616, 14.202, 39.448, 37.793),
+                           cov_R2Mar2020 = c(4.521, 0.715, 0.949, 4.224))
+
+mm_subset1.1 <- mmextract(mm_subset1, selection = selection1.1)
+mmstats(mm_subset1.1)
+
+#export bins
+mmexport(mm_subset1.1, assembly = assembly,
+         file = paste0(repolished_path, "mmgenome_bins/bin1.1.fa"))
+
+#remove bins from assembly to avoid duplicate contig binning
+mm.new2 <- mm %>%
+  filter(!(scaffold %in% c(mm_subset1.1$scaffold)))
+
+#################################
+# Selection 2
+#################################
+
+# full assembly after 1st bin scaffolds removed
+mmplot(mm.new2, 
+       x = 'tSNE1',
+       y = 'tSNE2',
+       color_by = "class", 
+       color_vector = scales::viridis_pal(option = "plasma")(3),
+       #color_scale_log10 = TRUE,
+       factor_shape = 'solid', 
+       alpha = 0.05,
+       locator = TRUE   #run this with locator on first, to select the points
+) 
+
+selection2 <- data.frame(tSNE1 = c(-4.43, -3.762, 5.366, 2.695),
+                         tSNE2 = c(-28.768, -38.404, -37.934, -28.298))
+
+# extract subset
+mm_subset2 <- mmextract(mm, selection = selection2) 
+mmstats(mm_subset2)
+
+# visualize pairings   
+mmplot_pairs(mm_subset2,
+             variables = c("tSNE1",
+                           "tSNE2",
+                           "cov_R2Sept2020",
+                           "cov_R2Nov2019",
+                           "cov_R2Mar2020",
+                           "gc"),
+             color_by = "gc",
+             alpha = 0.4,
+             size_scale = 0.7,
+             textsize = 4,
+             color_vector = scales::viridis_pal(option = "plasma")(3))
+
+
+# chose this plot to inspect
+mmplot(mm_subset2, 
        x = 'cov_R2Sept2020',
        y = 'cov_NPreads',
        color_by = "species", 
@@ -120,29 +195,34 @@ mmplot(mm_subset1,
        #fixed_size = 5,
        #selection = selection
 )
-# subset group 1 
-selection1.1 <- data.frame(cov_R2Sept2020 = c(26.28, 26.985, 38.143, 36.703),
-                           cov_NPreads = c(11.29, 6.674, 6.92, 11.482))
 
-#visualize the subsetted selection
-mmplot(mm_subset1, 
-       x = 'cov_R2Sept2020',
-       y = 'cov_NPreads',
-       color_by = "species", 
+#extract subsets as bins
+selection2.1 <- data.frame(cov_R2Sept2020 = c(24.814, 24.566, 41.94, 41.692),
+                           cov_NPreads = c(14.225, 8.691, 8.931, 14.627))
+
+mm_subset2.1 <- mmextract(mm_subset2, selection = selection2.1)
+mmstats(mm_subset2.1)
+
+#export bins
+mmexport(mm_subset2.1, assembly = assembly,
+         file = paste0(repolished_path, "mmgenome_bins/bin2.1.fa"))
+
+#remove bins from assembly to avoid duplicate contig binning
+mm.new3 <- mm %>%
+  filter(!(scaffold %in% c(mm_subset2.1$scaffold)))
+
+#################################
+# Selection 3
+#################################
+
+# full assembly after 1st bin scaffolds removed
+mmplot(mm.new3, 
+       x = 'tSNE1',
+       y = 'tSNE2',
+       color_by = "class", 
        color_vector = scales::viridis_pal(option = "plasma")(3),
-       factor_shape = 'solid',
-       #color_scale_log10 = TRUE, 
-       #x_limits = c(38, 45),
-       #y_limits = c(0, 2000),
-       #locator = TRUE,
-       #fixed_size = 5,
-       selection = selection1.1
-)
-
-# extract the subsetted selection as a bin 
-mm_subset1.1 <- mmextract(mm_subset1, selection = selection1.1)
-mmstats(mm_subset1.1)
-
-#export selection 1.1
-mmexport(mm_subset1.1, assembly = assembly,
-         file = paste0(repolished_path, "mmgenome_bins/bin1.1.fa"))
+       #color_scale_log10 = TRUE,
+       factor_shape = 'solid', 
+       alpha = 0.05,
+       locator = TRUE   #run this with locator on first, to select the points
+) 

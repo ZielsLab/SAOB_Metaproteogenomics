@@ -7,3 +7,6 @@
 .RData
 .Rhistory
 .Rproj.user
+databases/
+results/
+raw_data/
