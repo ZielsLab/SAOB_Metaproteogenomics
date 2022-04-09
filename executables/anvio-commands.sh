@@ -32,4 +32,10 @@ anvi-export-gene-calls -c ${out_path}/contigs.db --gene-caller prodigal -o ${out
 
 anvi-export-splits-taxonomy -c ${out_path}/contigs.db -o ${out_path}/anvi-splits-taxonomy.txt
 
+anvi-script-get-hmm-hits-per-gene-call -c contigs.db -o hmm-hits-bacteria.txt --hmm-source Bacteria_71
+
+anvi-script-get-hmm-hits-per-gene-call -c contigs.db -o hmm-hits-archaea --hmm-source Archaea_76
+
+
+
 
