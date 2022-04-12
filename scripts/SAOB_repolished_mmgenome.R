@@ -1630,3 +1630,5 @@ selection22 <- data.frame(tSNE1 = c(-2.874, -2.417, 7.165, 6.557),
 mm_subset22 <- mmextract(mm.new22, selection = selection22) 
 mmstats(mm_subset22)
   # under 1 Mb and doesn't have many essential genes
+
+# stop extracting here after 21 selections to assess quality and 23 total "bins" to assess the quality with CheckM
