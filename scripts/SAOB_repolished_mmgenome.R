@@ -5,6 +5,7 @@ library(shiny)
 library(Biostrings)
 library(Rtsne)
 library(viridis)
+library(ggpubr)
 
 #################################################################
 # Prepare files and mmgenome object
@@ -52,6 +53,10 @@ colnames(coverage_filtered) <- gsub(".vs.polished_nanopore.sorted.bam", "", coln
 colnames(np_reads_depth_filtered) <- c("contigName", "NPreads")
 all_coverage_table <- left_join(coverage_filtered, np_reads_depth_filtered)
 
+# saving the coverage table for other uses 
+coverage_samples <- coverage_table %>% 
+  select(contigName, (ends_with("sorted.bam")))
+colnames(coverage_samples)[1] <- c("scaffold")
 
 # load into mmgenomes
 mm <- mmload(
@@ -71,7 +76,7 @@ mmstats(mm)
 #################################################################
 
 # initial plot
-mmplot(mm, 
+full_mmplot <- mmplot(mm, 
        x = 'tSNE1',
        y = 'tSNE2',
        color_by = "class", 
@@ -79,8 +84,10 @@ mmplot(mm,
        #color_scale_log10 = TRUE,
        factor_shape = 'solid', 
        alpha = 0.05,
-       locator = TRUE   #run this with locator on first, to select the points
+       # locator = TRUE   #run this with locator on first, to select the points
 ) 
+
+ggsave("figures/SAOB_mmplot_binning.png", full_mmplot, width=30, height=20, units=c("cm"))
 
 #################################################################
 # Selecting Groups 
