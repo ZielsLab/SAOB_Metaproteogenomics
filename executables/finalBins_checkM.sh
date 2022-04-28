@@ -10,8 +10,8 @@
 
 #paths
 project_path="/project/6049207/AD_metagenome-Elizabeth"
-bins_path="${project_path}/re_binning/np_binning/combined_bin_set/bins"
-out_path="${project_path}/re_binning/np_binning/combined_bin_set/checkM"
+bins_path="${project_path}/re_binning/combined_bin_set/bins"
+out_path="${project_path}/re_binning/combined_bin_set/checkM"
 checkm_path="/home/eamcdani/projects/rrg-ziels/shared_tools/virtual_envs/checkM/bin/activate"
 
 #prepare environment
