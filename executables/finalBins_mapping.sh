@@ -2,8 +2,8 @@
 #SBATCH --account=rrg-ziels
 #SBATCH --array=1-15
 #SBATCH --cpus-per-task=8
-#SBATCH --mem-per-cpu=20G
-#SBATCH --time=5:0:0
+#SBATCH --mem-per-cpu=50G
+#SBATCH --time=12:0:0
 #SBATCH --job-name=finalBins_mapping.sh
 #SBATCH --output=%x.out
 #SBATCH --mail-user=eamcdani@mail.ubc.ca
