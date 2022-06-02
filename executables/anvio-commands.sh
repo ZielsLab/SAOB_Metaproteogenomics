@@ -36,6 +36,7 @@ anvi-script-get-hmm-hits-per-gene-call -c contigs.db -o hmm-hits-bacteria.txt --
 
 anvi-script-get-hmm-hits-per-gene-call -c contigs.db -o hmm-hits-archaea --hmm-source Archaea_76
 
+anvi-get-sequences-for-gene-calls -c contigs.db --get-aa-sequences -o saob-ont-proteins.faa
 
 
 
