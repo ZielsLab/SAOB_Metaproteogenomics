@@ -49,6 +49,8 @@ relative_abundance_table <- relative_abundance_stats %>%
 # write out relative abundance table 
 write.csv(relative_abundance_table, "results/final_bins/SAOB_relative_abundance_table.csv", quote=FALSE, row.names = FALSE)
 
+write.csv(relative_abundance_stats, "results/final_bins/SAOB_final_bins_info_table.csv", quote=FALSE, row.names = FALSE)
+
 # inStrain quick profiles 
 # read in all coverage files into one file
 coverage_path <- "results/final_bins/quick_profiles/"
