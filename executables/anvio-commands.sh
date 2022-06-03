@@ -28,15 +28,13 @@ anvi-run-scg-taxonomy -c ${out_path}/contigs.db --num-parallel-processes 12 --nu
 anvi-estimate-scg-taxonomy -c ${out_path}/contigs.db -T 12 --metagenome-mode
 
 # export gene calls and scg taxonomy results 
-anvi-export-gene-calls -c ${out_path}/contigs.db --gene-caller prodigal -o ${out_path}/scg_gene_calls.txt 
+anvi-export-gene-calls -c ${out_path}/contigs.db --gene-caller prodigal -o ${out_path}/gene_calls.txt 
 
-anvi-export-splits-taxonomy -c ${out_path}/contigs.db -o ${out_path}/anvi-splits-taxonomy.txt
+anvi-get-sequences-for-gene-calls -c contigs.db --get-aa-sequences -o saob-ont-proteins.faa
 
 anvi-script-get-hmm-hits-per-gene-call -c contigs.db -o hmm-hits-bacteria.txt --hmm-source Bacteria_71
 
-anvi-script-get-hmm-hits-per-gene-call -c contigs.db -o hmm-hits-archaea --hmm-source Archaea_76
-
-anvi-get-sequences-for-gene-calls -c contigs.db --get-aa-sequences -o saob-ont-proteins.faa
+anvi-script-get-hmm-hits-per-gene-call -c contigs.db -o hmm-hits-archaea.txt --hmm-source Archaea_76
 
 
 
