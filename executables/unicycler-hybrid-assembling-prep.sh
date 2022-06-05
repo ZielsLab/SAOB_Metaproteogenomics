@@ -35,7 +35,7 @@ ilm_assembly=$(sed -n "${SLURM_ARRAY_TASK_ID}p" unicycler_dir_files.txt | awk -F
 
 # modules
 # bowtie and minimap2 mapping, samtools, unicycler Singularity image
-module load StdEnv/2020 gcc/9.3.0 bowtie2 samtools minimap2
+module load StdEnv/2020 gcc/9.3.0 bowtie2 samtools minimap2 bedtools
 
 # cd into the directory 
 cd ${dirs_path}/${dir_name}
@@ -72,8 +72,8 @@ done
 
 for file in *_vs_long_reads.sorted.bam; do
 	name=$(basename $file .sorted.bam);
-	samtools fastq $file -o ${name}.fastq; 
-done
+	bedtools bamtofastq -i $file -fq ${name}.fastq; 
+done # has to be done with bamtofastq because samtools fastq command expecting paired end reads and did weird things
 
 # mapping files generated, feed into dedupe.sh for deduplication of the short read files and long read files
 
