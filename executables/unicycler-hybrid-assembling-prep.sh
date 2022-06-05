@@ -25,20 +25,26 @@ r2_read_path="${project_path}/00_illumina_for_polishing/illumina_qced/R2Sept2020
 np_read_path="${project_path}/03_porechop_trimmed/AD_SIP_trimmed_combined.fastq"
 
 # assembly directory name based from the array job
-assembly_name=$(sed -n "${SLURM_ARRAY_TASK_ID}p" genome_directories.txt | awk -F "\t" '{print $1}')
+dir_name=$(sed -n "${SLURM_ARRAY_TASK_ID}p" unicycler_dir_files.txt | awk -F "\t" '{print $1}')
+
+# long read assembly 
+np_assembly=$(sed -n "${SLURM_ARRAY_TASK_ID}p" unicycler_dir_files.txt | awk -F "\t" '{print $2}')
+
+# short read assembly
+ilm_assembly=$(sed -n "${SLURM_ARRAY_TASK_ID}p" unicycler_dir_files.txt | awk -F "\t" '{print $3}')
 
 # modules
 # bowtie and minimap2 mapping, samtools, unicycler Singularity image
 module load StdEnv/2020 gcc/9.3.0 bowtie2 samtools minimap2
 
 # cd into the directory 
-${dirs_path}/${assembly_name}
+cd ${dirs_path}/${dir_name}
 mkdir bt2
 
 # make bowtie2 indexes of each assembly for short read 
 	# np assembly
-bowtie2-build bin*.fa bt2/np_assembly
-bowtie2-build R2Sept2020*.fa bt2/ilm_assembly
+bowtie2-build ${np_assembly} bt2/np_assembly
+bowtie2-build ${ilm_assembly} bt2/ilm_assembly
 
 # map short reads to each assembly with bowtie2
 bowtie2 -x bt2/np_assembly -1 ${r1_read_path} -2 ${r2_read_path} -q --very-sensitive -p 10 -S np_assembly_vs_ilm_reads.sam 
