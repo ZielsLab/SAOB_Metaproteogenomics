@@ -52,6 +52,24 @@ mag_data <- pept %>%
             mean_RIA1 = mean(`RIA 1`),
             mean_RIA2 = mean(`RIA 2`))
 
+mag %>% 
+  ggplot(aes(x=prep_id, y=global_LR)) +
+  geom_boxplot() +
+  facet_wrap(~ bin)
+
+mag$prep_id <- factor(mag$prep_id, levels=c("_15", "_16", "_17", "_03", "_08", "_10", "_04", "_11", "_12"))
+mag_data$prep_id <- factor(mag_data$prep_id, levels=c("_15", "_16", "_17", "_03", "_08", "_10", "_04", "_11", "_12"))
+
+mag %>% 
+  ggplot(aes(x=prep_id, y=global_LR)) + 
+  geom_boxplot() +
+  facet_grid(cols=vars(time_hr), scales="free_x")
+
+mag %>% 
+  ggplot(aes(x=prep_id, y=global_LR)) +
+  geom_tile() +
+  facet_grid(cols=vars(time_hr), rows=vars(bin), scales="free_x")
+
 mag_modf <- mag %>% 
   select(bin, prep_id, time_hr, global_LR, proteins, contig)
 
