@@ -11,8 +11,8 @@
 
 #paths
 project_path="/project/6049207/AD_metagenome-Elizabeth"
-bins_path="${project_path}/re_binning/combined_bin_set/bins"
-out_path="${project_path}/re_binning/combined_bin_set/GTDB"
+bins_path="${project_path}/re_binning/np_binning_v2_poly/final_bins_analysis/np_ilm_bins"
+out_path="${project_path}/re_binning/np_binning_v2_poly/final_bins_analysis/GTDB"
 gtdbtk_path="/home/eamcdani/virtual_envs/gtdbtk/bin/activate"
 
 # modules and gtdbtk env load

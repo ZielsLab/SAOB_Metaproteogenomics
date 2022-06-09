@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem-per-cpu=50G
 #SBATCH --time=12:0:0
-#SBATCH --job-name=finalBins_mapping.sh
+#SBATCH --job-name=finalBins_mapping
 #SBATCH --output=%x.out
 #SBATCH --mail-user=eamcdani@mail.ubc.ca
 #SBATCH --mail-type=ALL
@@ -14,13 +14,14 @@ mapping_file=$(sed -n "${SLURM_ARRAY_TASK_ID}p" saob_metagenomes.txt)
 
 #paths
 project_path="/project/6049207/AD_metagenome-Elizabeth"
-ref_path="${project_path}/re_binning/combined_bin_set/mappingResults/bins/bt2/all_SAOB_bins.fasta"
+final_bins="${project_path}/re_binning/np_binning_v2_poly/final_bins_analysis"
+ref_path="${final_bins}/bt2/all_SAOB_bins.fasta"
 reads_path=$(dirname $mapping_file)
 sample_name=$(basename $mapping_file _R1.qced.fastq)
 r1_file="${reads_path}/${sample_name}_R1.qced.fastq"
 r2_file="${reads_path}/${sample_name}_R2.qced.fastq"
-out_path="${project_path}/re_binning/combined_bin_set/mappingResults"
-out_name="${out_path}/${sample_name}-vs-bins"
+out_path="${final_bins}/mappingResults"
+out_name="${out_path}/${sample_name}-vs-final-bins"
 
 # load modules
 module load bowtie2 samtools
