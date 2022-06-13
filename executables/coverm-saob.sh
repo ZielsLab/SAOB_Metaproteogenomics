@@ -10,9 +10,9 @@
 
 #paths
 project_path="/project/6049207/AD_metagenome-Elizabeth"
-mapping_path="${project_path}/re_binning/combined_bin_set/mappingResults"
-ref_path="${project_path}/re_binning/combined_bin_set/mappingResults/bins/all_SAOB_bins.fasta"
-out_path="${project_path}/re_binning/combined_bin_set"
+mapping_path="/home/eamcdani/scratch/mappingResults"
+ref_path="${project_path}/re_binning/np_binning_v2_poly/final_bins_analysis/all_SAOB_bins.fasta"
+out_path="/home/eamcdani/scratch"
 
 # load modules for coverm 
 module load rust samtools
