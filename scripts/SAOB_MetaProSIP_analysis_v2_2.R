@@ -123,12 +123,38 @@ lfq <- lfq %>%
     group_by(MAG, prep_id, time_hr, sample.y) %>% 
     summarise(n_proteins = n(),
               lfq_norm_cum = sum(lfq_norm))
+  # join with names 
+  colnames(group_names)[1] <- c("MAG")
+  lfq.mag.names <- left_join(lfq.mag, group_names) %>% 
+    drop_na()
+  
     # Mean LR
-    ggplot(lfq.mag, aes(x = prep_id, y = MAG)) + 
+    mag_tot_prot_activity <- ggplot(lfq.mag.names, aes(x = prep_id, y = fct_rev(specific_name))) + 
       geom_tile(aes(fill = log10(lfq_norm_cum))) + 
       scale_fill_gradientn(name = "Relative protein ab. (log)", colours=rev(pal)) + 
-      facet_grid(cols = vars(time_hr), scales = "free_x") + 
+      facet_grid(cols = vars(time_hr), scales="free_x") + 
       theme_bw()
+    
+    # find top 10 active mags
+    top_10_mags <- lfq.mag.names %>% 
+      filter(prep_id == '_18') %>% 
+      select(MAG, n_proteins) %>% 
+      group_by(MAG) %>% 
+      arrange(desc(n_proteins)) %>% 
+      filter(n_proteins > 50) %>% 
+      pull(MAG)
+    
+    prot_activity_top10 <- lfq.mag.names %>% 
+      filter(MAG %in% top_10_mags) %>% 
+      ggplot(aes(x=prep_id, y = fct_rev(specific_name))) + 
+      geom_tile(aes(fill = log10(lfq_norm_cum))) + 
+      scale_fill_gradientn(name = "Relative protein ab. (log)", colours=rev(pal)) + 
+      facet_grid(cols = vars(time_hr), scales="free_x") + 
+      theme_bw()
+    
+    
+    ggsave("figures/mag_tot_prot_activity.png", mag_tot_prot_activity, width=20, height=15, units=c("cm"))
+    ggsave("figures/top10_activity.png", prot_activity_top10, width=20, height=10, units=c("cm"))
 
 # combine with total protein quantification 
     prot.quant <- read_csv(file =  "results/metaproteomics_results/SAOB_SIP_protein_extract_quant.csv") %>%
@@ -155,6 +181,7 @@ lfq <- lfq %>%
                 stdev_lr_mag = std(mean_lr)) %>% #determine mean label ratio and RIA per mag over time
       left_join(prot.quant, by = c("MAG", "time_hr")) %>%
       mutate(mag_lab_prot = mean_prot_mag  * mean_lr_mag * mean_ria_mag)
+    
 
       # Plot absolute labeled protein per MAG
       ggplot(mag.tp, aes(x = as.factor(time_hr), y = MAG)) + 
@@ -162,11 +189,15 @@ lfq <- lfq %>%
         scale_fill_gradientn(name = "Labelled protein carbon (g-13C_prot/L)", colours=rev(pal)) + 
         theme_bw()
     
-      ggplot( mag.tp %>% rbind(tibble( MAG = unique(mag.tp$MAG), time_hr = 0, mag_lab_prot = 0)) %>%
+      top_mags_incorp <- ggplot( mag.tp %>% rbind(tibble( MAG = unique(mag.tp$MAG), time_hr = 0, mag_lab_prot = 0)) %>%
                 filter(MAG %in% c("bin4.1", "bin4.2", "bin14.1")),
               aes(x = time_hr, y = mag_lab_prot, group = MAG)
-      ) +  geom_line() + 
-        geom_point(aes(color = MAG)) +
-        theme_pubr()
+      ) +  geom_line(aes(color = MAG), size=1.5) + 
+        geom_point(aes(color = MAG), size=1.5) +
+        theme_bw() +
+        theme(legend.position = c("right"))
+    
+      top_mags_incorp
 
+      ggsave("figures/top3MAGS_isotope_incorporation.png", top_mags_incorp, width=20, height=13, units=c("cm"))
  
