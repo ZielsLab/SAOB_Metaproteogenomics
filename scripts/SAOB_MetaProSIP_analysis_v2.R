@@ -6,10 +6,10 @@ library(PNWColors)
 # Set Paths
 
   ## path to MetaProSIP peptide files
-  pep.path <- "~/Documents/UBC_Research/PostDoc/Elizabeth McDaniel/SAOB_Enrichments/Metaproteomics/MetaProSIP/derep_ont_ilm_asm/MSP_out/peptides/"
+  pep.path <- "results/metaproteomics_results/MSP_out/peptides/"
 
   ## protein sample metadata file 
-  meta <- read_xlsx("~/Documents/UBC_Research/PostDoc/Elizabeth McDaniel/SAOB_Enrichments/Metaproteomics/metaproteomics-sample-map.xlsx") %>%
+  meta <- read_xlsx("metadata/metaproteomics-sample-map_modified.xlsx") %>%
     rename(prep_id = `Prep ID`, sample = `Original ID`) %>%
     mutate(prep_id = as.character(prep_id)) %>%
     select(prep_id, sample, time_hr, isotope) 
