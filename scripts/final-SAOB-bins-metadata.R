@@ -2,6 +2,7 @@ library(tidyverse)
 library(ggpubr)
 library(viridis)
 library(RColorBrewer)
+library(lubridate)
 
 #######################################
 # Final SAOB Bins metadata organization
@@ -62,5 +63,64 @@ relative_abundance_stats %>%
 
 
 #######################################
-# Final SAOB Bins metadata organization
+# relative abundance plots
 #######################################
+group_names <- read.csv("results/SAOB_final_bins_info_names_table.csv") %>% 
+  select(bin, classification, group, specific_name)
+
+# sampling dates
+sampling_dates <- read_xlsx(path="metadata/EMSL-LS_DNA_Samples_2021_MWM.xlsx", sheet="Sheet1", col_names = TRUE)
+
+sampling_info <- sampling_dates %>%
+  mutate(Date = ymd(Date)) %>% 
+  mutate(operation_day = Date - first(Date)) %>% 
+  mutate(operation_day = as.factor(operation_day))
+
+r2_abund <- relative_abundance_stats %>% 
+  select(starts_with("R2"), bin) %>% 
+  pivot_longer(!bin, names_to="sample", values_to="relative_abundance") %>% 
+  left_join(group_names) %>% 
+  left_join(sampling_info) %>% 
+  select(bin, sample, relative_abundance, group, operation_day)
+r2_abund$sample <- factor(r2_abund$sample, levels=c("R2Nov2019", "R2Dec2019", "R2Jan2020", "R2Feb2020", "R2Mar2020", "R2July2020", "R2Sept2020"))
+
+r2_abundance_succession <- r2_abund %>% 
+  ggplot(aes(x=as_factor(operation_day), y=relative_abundance, fill=group)) +
+  scale_fill_brewer(palette = "Spectral") +
+  geom_bar(stat="identity", color="black", size=0.3, width=0.8) +
+  theme_pubr() +
+  scale_y_continuous(expand=c(0,0)) +
+  xlab("Operation Day") + ylab("Relative Abundance of MAG") +
+  theme(legend.position="bottom")
+
+ggsave("figures/SAOB_R2_abundance_succession.png", r2_abundance_succession, width=30, height=20, units=c("cm"))
+
+sept_date <- r2_abund %>% 
+  filter(operation_day == '283') %>% 
+  ggplot(aes(x=as_factor(operation_day), y=relative_abundance, fill=group)) +
+  scale_fill_brewer(palette = "Spectral") +
+  geom_bar(stat="identity", color="black", size=0.3, width=0.8) +
+  theme_pubr() +
+  scale_y_continuous(expand=c(0,0)) +
+  xlab("Operation Day") + ylab("Relative Abundance of MAG") +
+  theme(legend.position="none")
+
+ggsave("figures/SAOB_experiment_abundance.png", sept_date, width=10, height=15, units=c("cm"))
+
+r2_abund %>% 
+  filter(group == 'METHANO1' | group == 'METHANO2') %>% 
+  ggplot(aes(x=operation_day, y=fct_rev(group), fill=relative_abundance))  + 
+  geom_tile(color="white") +
+  scale_x_discrete(expand=c(0,0)) +
+  scale_y_discrete(expand=c(0,0)) +
+  ylab("MAG") +
+  xlab("Operation Day")
+
+r2_abund %>% 
+  filter(group == 'SYNTROPH1' | group == 'SYNTROPH2') %>% 
+  ggplot(aes(x=operation_day, y=fct_rev(group), fill=relative_abundance)) + 
+  geom_tile(color="white") +
+  scale_x_discrete(expand=c(0,0)) +
+  scale_y_discrete(expand=c(0,0)) +
+  ylab("MAG") +
+  xlab("Operation Day")

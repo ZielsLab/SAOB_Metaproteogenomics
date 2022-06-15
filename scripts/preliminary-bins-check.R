@@ -6,6 +6,10 @@ library(readxl)
 library(lubridate)
 
 #######################################
+# this script is out of data as the calculations are based on the depth files and overestimate relative abundance, new script files takes input from coverM calculations
+#######################################
+
+#######################################
 # Sampling dates for DNA  
 #######################################
 
