@@ -148,9 +148,11 @@ lfq <- lfq %>%
       filter(MAG %in% top_10_mags) %>% 
       ggplot(aes(x=prep_id, y = fct_rev(specific_name))) + 
       geom_tile(aes(fill = log10(lfq_norm_cum))) + 
-      scale_fill_gradientn(name = "Relative protein ab. (log)", colours=rev(pal)) + 
+      scale_fill_gradientn(name = "Log Relative Protein Abundance", colours=rev(pal)) + 
       facet_grid(cols = vars(time_hr), scales="free_x") + 
-      theme_bw()
+      theme_bw() +
+      theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())
+    prot_activity_top10
     
     
     ggsave("figures/mag_tot_prot_activity.png", mag_tot_prot_activity, width=20, height=15, units=c("cm"))

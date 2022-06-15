@@ -3,6 +3,7 @@ library(ggpubr)
 library(viridis)
 library(RColorBrewer)
 library(lubridate)
+library(readxl)
 
 #######################################
 # Final SAOB Bins metadata organization
@@ -66,7 +67,7 @@ relative_abundance_stats %>%
 # relative abundance plots
 #######################################
 group_names <- read.csv("results/SAOB_final_bins_info_names_table.csv") %>% 
-  select(bin, classification, group, specific_name)
+  select(bin, classification, group_name, specific_name)
 
 # sampling dates
 sampling_dates <- read_xlsx(path="metadata/EMSL-LS_DNA_Samples_2021_MWM.xlsx", sheet="Sheet1", col_names = TRUE)
@@ -81,19 +82,21 @@ r2_abund <- relative_abundance_stats %>%
   pivot_longer(!bin, names_to="sample", values_to="relative_abundance") %>% 
   left_join(group_names) %>% 
   left_join(sampling_info) %>% 
-  select(bin, sample, relative_abundance, group, operation_day)
-r2_abund$sample <- factor(r2_abund$sample, levels=c("R2Nov2019", "R2Dec2019", "R2Jan2020", "R2Feb2020", "R2Mar2020", "R2July2020", "R2Sept2020"))
+  select(bin, sample, relative_abundance, group_name, operation_day)
+
 
 r2_abundance_succession <- r2_abund %>% 
-  ggplot(aes(x=as_factor(operation_day), y=relative_abundance, fill=group)) +
+  ggplot(aes(x=as_factor(operation_day), y=relative_abundance, fill=group_name)) +
   scale_fill_brewer(palette = "Spectral") +
   geom_bar(stat="identity", color="black", size=0.3, width=0.8) +
   theme_pubr() +
   scale_y_continuous(expand=c(0,0)) +
   xlab("Operation Day") + ylab("Relative Abundance of MAG") +
-  theme(legend.position="bottom")
+  theme(legend.position="right", legend.text=element_text(size=20), axis.title.x = element_text(size=15), axis.title.y=element_text(size=15), axis.text.x = element_text(size=15), axis.text.y=element_text(size=15))
 
-ggsave("figures/SAOB_R2_abundance_succession.png", r2_abundance_succession, width=30, height=20, units=c("cm"))
+r2_abundance_succession
+
+ggsave("figures/SAOB_R2_abundance_succession.png", r2_abundance_succession, width=35, height=17, units=c("cm"))
 
 sept_date <- r2_abund %>% 
   filter(operation_day == '283') %>% 
