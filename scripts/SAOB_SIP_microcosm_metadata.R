@@ -9,9 +9,9 @@ library(patchwork)
 
 ## read in metadata from  spreadsheet, binding rows of each worksheet together
   # experimental values file path
-  meta_path = "raw_data/SIP_Acetate_BONCAT_Sept_2020_data_compilation.xlsx"
+  meta_path = "raw_data/experiment_metadata/SIP_Acetate_BONCAT_Sept_2020_data_compilation.xlsx"
   # microcosm metadata file path
-  bottle_meta = "raw_data/SIP_Acetate_BONCAT_Sept_2020_metadata.xlsx"
+  bottle_meta = "raw_data/experiment_metadata/SIP_Acetate_BONCAT_Sept_2020_metadata.xlsx"
   
   #read files
   meta <- read_xlsx(path = meta_path, sheet = '24h', col_names = TRUE) %>%
@@ -51,8 +51,9 @@ ch4_plot <- ggplot(ch4,
   scale_color_viridis(discrete = TRUE, option = "D")+
   scale_fill_viridis(discrete = TRUE,  option = "D") +
   ylab("Cumulative methane \n production (mL)") + 
-  xlab("Time (hrs)") + 
-  theme_pubr()
+  xlab("Time (hrs)") +
+  theme_pubr() +
+  theme(axis.title.y=element_text(face="bold"), axis.title.x=element_text(face="bold"), legend.title=element_text(face="bold"))
 ch4_plot
 
 # vfa concentration
@@ -67,24 +68,28 @@ vfa_plot <- ggplot(meta %>%
   scale_fill_viridis(discrete = TRUE,  option = "D") +
   ylab("Acetate concentration \n (mg/L)") + 
   xlab("Time (hrs)") +
-  theme_pubr()
+  theme_pubr() +
+  theme(axis.title.y=element_text(face="bold"), axis.title.x=element_text(face="bold"))
 
 # Gas plot
 
 gas_plot <- gas_table %>% 
+  filter(ratio == "CO2_CH4") %>% 
   ggplot(aes(x=hr, y=percent)) + 
   geom_line(aes(color=ratio), size=1.2) +
-  scale_color_manual(values = c("purple", "darkblue"), labels = c("\n %13C-CO2 : %13C-CH4", "%-SAOB-pathway")) + 
+  scale_color_manual(values = c("darkblue"), labels = c("\n %13C-CO2 : %13C-CH4")) + 
   xlab("Time (hrs)") +
   ylab("Ratio of %13C-CO2 : %13C-CH4, \n or fraction of CH4 from SAO pathway (%)") + 
-  theme_pubr(legend="bottom") + 
-  labs(color = "parameter") + 
-  theme(axis.title.y = element_text(size=10))
+  theme_pubr() +
+  theme(axis.title.y = element_text(size=10, face="bold"), axis.title.x=element_text(size=15, face="bold"), legend.position="none")
 gas_plot
 
+# save plots
 ggsave("figures/cumulative_ch4_plot_sip_timeseries.png", ch4_plot, width=12, height=8, units=c("cm"))
 
 ggsave("figures/vfa_degradation_sip_timeseries.png", vfa_plot, width=12, height=8, units=c("cm"))
+
+ggsave("figures/gas_ratio_plot.png", gas_plot, width=15, height=10, units=c("cm"))
 
 chem_grid <- plot_grid(ch4_plot, NULL, vfa_plot, nrow=1, labels = c("A", "", "B"), rel_widths = c(1.5, 0.05, 2))
 
@@ -111,14 +116,20 @@ saob_grid <- plot_grid(
 )
 
 ggsave("figures/saob_sip_experiment_metadata_grid.png", saob_grid, width=15, height=12, units=c("cm"))
+saob_grid
 
 # Arrange with ggpubr
-sip_experiment <- ggarrange(ch4_plot, vfa_plot, ncol=1, nrow=2, common.legend=TRUE, legend="bottom", widths=c(1,1.1), labels = c("A", "B"))
+sip_experiment <- ggarrange(ch4_plot, vfa_plot, ncol=2, nrow=1, common.legend=TRUE, legend="top", widths=c(1,1.2))
+sip_experiment
 
 ggsave("figures/SIP-experiment-grid-metadata.png", sip_experiment, width=20, height=12, units=c("cm"))
 
-gas_grid <- plot_grid(gas_plot, labels=c("C"), label_y=1)
-gas_grid
+combined_grid <- ggarrange(sip_experiment, gas_plot, ncol=1, heights=c(1.8,1))
+combined_grid
+
+ggsave("figures/combined-SIP-experiment-grid.png", combined_grid, width=25, height=15, units=c("cm"))
+
+# other grids 
 
 experiment_grid <- sip_experiment + gas_grid
 plot_grid(sip_experiment, gas_grid, nrow=2, ncol=1, rel_heights=c(1.5,2))

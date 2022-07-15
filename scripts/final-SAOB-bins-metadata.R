@@ -91,12 +91,14 @@ r2_abundance_succession <- r2_abund %>%
   geom_bar(stat="identity", color="black", size=0.3, width=0.8) +
   theme_pubr() +
   scale_y_continuous(expand=c(0,0)) +
+  labs(fill="Group") +
   xlab("Operation Day") + ylab("Relative Abundance of MAG") +
-  theme(legend.position="right", legend.text=element_text(size=20), axis.title.x = element_text(size=15), axis.title.y=element_text(size=15), axis.text.x = element_text(size=15), axis.text.y=element_text(size=15))
+  theme(legend.position="bottom", legend.text=element_text(size=20), axis.title.x = element_text(size=25, face="bold"), axis.title.y=element_text(size=25, face="bold"), axis.text.x = element_text(size=20), axis.text.y=element_text(size=20), legend.title=element_text(size=25, face="bold"))
 
 r2_abundance_succession
 
-ggsave("figures/SAOB_R2_abundance_succession.png", r2_abundance_succession, width=35, height=17, units=c("cm"))
+
+ggsave("figures/SAOB_R2_abundance_succession.png", r2_abundance_succession, width=50, height=25, units=c("cm"))
 
 sept_date <- r2_abund %>% 
   filter(operation_day == '283') %>% 
