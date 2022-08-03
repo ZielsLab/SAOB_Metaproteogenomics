@@ -1,3 +1,3 @@
-# Metabolic Networks of Syntrophic Acetate-Oxidizing Bioreactor Communities
+# Metabolic Networks of Acetate-Oxidizing Bioreactor Communities
 
-Repository for code, SLURM executables, and workflows for investigating the metabolic networks of syntrophic acetate-oxidizing (SAO) microbial communities in lab-scale anaerobic enrichment bioreactors. Applying genome-resolved metagenomics, metaproteomics, metabolomics, and stable-isotope probing to understand the dynamics and functional guilds of microorganisms achieving syntrophic acetate-oxidation for methane production. 
+Repository for code, SLURM executables, and workflows for investigating the metabolic networks of acetate oxidizing microbial communities in lab-scale anaerobic enrichment bioreactors. Applying stable-isotope informed genome-resolved metagenomics and metaproteomics to understand the dynamics and functional guilds of microorganisms producing methane through the syntrophic-acetate oxidation pathway. 

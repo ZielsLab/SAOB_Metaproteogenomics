@@ -76,8 +76,8 @@ vfa_plot <- ggplot(meta %>%
 gas_plot <- gas_table %>% 
   filter(ratio == "CO2_CH4") %>% 
   ggplot(aes(x=hr, y=percent)) + 
-  geom_line(aes(color=ratio), size=1.2) +
-  scale_color_manual(values = c("darkblue"), labels = c("\n %13C-CO2 : %13C-CH4")) + 
+  geom_line(aes(color=ratio), size=2) +
+  scale_color_manual(values = c("#35b779"), labels = c("\n %13C-CO2 : %13C-CH4")) + 
   xlab("Time (hrs)") +
   ylab("Ratio of %13C-CO2 : %13C-CH4, \n or fraction of CH4 from SAO pathway (%)") + 
   theme_pubr() +
@@ -127,12 +127,5 @@ ggsave("figures/SIP-experiment-grid-metadata.png", sip_experiment, width=20, hei
 combined_grid <- ggarrange(sip_experiment, gas_plot, ncol=1, heights=c(1.8,1))
 combined_grid
 
-ggsave("figures/combined-SIP-experiment-grid.png", combined_grid, width=25, height=15, units=c("cm"))
+ggsave("figures/combined-SIP-experiment-grid.png", combined_grid, width=20, height=20, units=c("cm"))
 
-# other grids 
-
-experiment_grid <- sip_experiment + gas_grid
-plot_grid(sip_experiment, gas_grid, nrow=2, ncol=1, rel_heights=c(1.5,2))
-experiment_grid
-
-ggsave('figures/IWA_AD_abstract/experiment_grid.png', experiment_grid, width=25, height=15, units=c("cm"))
