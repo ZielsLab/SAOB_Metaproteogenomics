@@ -1,3 +1,4 @@
+results/
 *.tre
 *.fasta
 *.faa
@@ -8,5 +9,4 @@
 .Rhistory
 .Rproj.user
 databases/
-results/
 raw_data/
