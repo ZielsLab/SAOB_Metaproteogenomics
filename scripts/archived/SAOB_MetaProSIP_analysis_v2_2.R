@@ -7,7 +7,7 @@ library(sjmisc)
 # Set Paths
 
   ## path to MetaProSIP peptide files
-  pep.path <- "results/metaproteomics_results/MSP_out/peptides/"
+  pep.path <- "results/archived/metaproteomics_results_v1/MSP_out/peptides/"
 
   ## protein sample metadata file 
   meta <- read_xlsx("metadata/metaproteomics-sample-map_modified.xlsx") %>%
