@@ -20,7 +20,9 @@ metapathways_annotations <- metapathways_annotation_tables %>%
 kofam_annotations <- read.table("results/pathways/all-saob-kofam-annotations-sig-modf.txt", sep="\t", col.names = c("ORF_ID", "KO", "KEGG_annotation"))
 
 # join the metapathways and kofam annotations by locus tag, where bin name is already split out from above
-all_annotation_table <- left_join(metapathways_annotations, kofam_annotations)
+all_annotation_table <- left_join(kofam_annotations, metapathways_annotations) %>% 
+  select(bin, ORF_ID, Contig_Name, ORF_length, start, end, strand, target, product, KO, KEGG_annotation)
 
-# write the annotation table 
-write.csv(all_annotation_table, "results/pathways/all_mps_kofam_annotations.csv", quote = FALSE, row.names = FALSE)
+# write the annotation tables
+
+write.table(metapathways_annotations, "results/pathways/metapathways_annoation_table.txt", sep="\t", row.names = FALSE, quote = FALSE)

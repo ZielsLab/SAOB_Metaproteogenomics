@@ -1,7 +1,7 @@
 library(tidyverse)
 library(readxl)
 library(PNWColors)
-
+library(MetBrewer)
 
 # Set Paths
 
@@ -60,16 +60,24 @@ library(PNWColors)
              mean_RIA2 = mean(`RIA 2`))
  
 # summarize results at MAG level
- mag <- pept %>%
-   mutate(MAG = sapply(strsplit(proteins, "~"), `[`, 1)) %>%
-   select(MAG, prep_id, time_hr, global_LR, RIA1 =`RIA 1`, RIA2= `RIA 2`) %>%
-   drop_na() %>%
-   group_by(MAG, prep_id, time_hr) %>% 
-   summarise(n_peptides = n(),
-             mean_lr = mean(global_LR), 
-             median_lr = median(global_LR),
-             mean_RIA1 = mean(RIA1),
-             mean_RIA2 = mean(RIA2))
+# read in file of annotations with bin and locus tag columns 
+bin_table <- read_tsv("results/pathways/metapathways_annoation_table.txt") %>% 
+  mutate(protein = ORF_ID) %>% 
+  mutate(MAG = bin) %>% 
+  select(MAG, protein)
+
+bin_table_upper <- bin_table %>% 
+  mutate(proteins = toupper(protein))
+
+mag <- left_join(bin_table_upper, pept) %>% 
+  select(MAG, prep_id, time_hr, global_LR, RIA1 = `RIA 1`, RIA2 = `RIA 2`) %>% 
+  drop_na() %>% 
+  group_by(MAG, prep_id, time_hr) %>% 
+  summarise(n_peptides = n(), 
+            mean_lr = mean(global_LR), 
+            median_lr = median(global_LR),
+            mean_RIA1 = mean(RIA1), 
+            mean_RIA2 = mean(RIA2))
 
  #plot contig LR
  ggplot(mag, aes(x = prep_id, y = mean_lr)) + 
@@ -120,11 +128,14 @@ lfq <- lfq %>%
    mutate(lfq_norm = lfq/total_lfq)  #calculate relative abundance in (g prot_mag/g prot_total)
 
   # by MAG 
-  lfq.mag <- lfq %>% #summarize at mag level
-    mutate(MAG = sapply(strsplit(protein, "~"), `[`, 1)) %>%
+  lfq.mag <- bin_table %>%
+    select(MAG, protein) %>% 
+    left_join(lfq) %>% 
     group_by(MAG, prep_id, time_hr, sample.y) %>% 
     summarise(n_proteins = n(),
-              lfq_norm_cum = sum(lfq_norm))
+              lfq_norm_cum = sum(lfq_norm)) %>% 
+    drop_na()
+  
     # Mean MAG LFQ
     ggplot(lfq.mag, aes(x = prep_id, y = MAG)) + 
       geom_tile(aes(fill = log10(lfq_norm_cum))) + 
@@ -159,8 +170,8 @@ lfq <- lfq %>%
       mutate(mag_lab_prot = mean_prot_mag  * mean_lr_mag * mean_ria_mag) %>%
       mutate(mag_lab_prot_std = mag_lab_prot * sqrt((stdev_ria_mag/3/mean_ria_mag)^2 + (stdev_lr_mag/3/mean_lr_mag)^2 + (stdev_prot_mag/3/mean_prot_mag)^2 ) )
 
-    mag.3.tp <- mag.tp %>% filter(MAG %in% c("bin14.1", "bin4.1", "bin4.2"))
-    mag.other.tp <- mag.tp %>% filter(!(MAG %in% c("bin14.1", "bin4.1", "bin4.2"))) %>%
+    mag.3.tp <- mag.tp %>% filter(MAG %in% c("bin14_1", "bin4_1", "bin4_2"))
+    mag.other.tp <- mag.tp %>% filter(!(MAG %in% c("bin14_1", "bin4_1", "bin4_2"))) %>%
     mutate(MAG = "All_others") %>%
       group_by(time_hr) %>%
       summarize(MAG = MAG, time_hr = time_hr, mag_lab_prot = sum(mag_lab_prot))
