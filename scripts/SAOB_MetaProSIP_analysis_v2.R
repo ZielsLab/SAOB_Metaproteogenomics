@@ -142,6 +142,26 @@ lfq <- lfq %>%
       scale_fill_gradientn(name = "Relative protein ab. (log)", colours=rev(pal)) + 
       facet_grid(cols = vars(time_hr), scales = "free_x") + 
       theme_bw()
+    
+    # find top 10 active mags
+    top_10_mags <- lfq.mag %>% 
+      filter(prep_id == '_18') %>% 
+      select(MAG, n_proteins) %>% 
+      group_by(MAG) %>% 
+      arrange(desc(n_proteins)) %>% 
+      filter(n_proteins > 50) %>% 
+      pull(MAG)
+    
+      lfq.mag %>% 
+      filter(MAG %in% top_10_mags) %>% 
+      ggplot(aes(x=prep_id, y = fct_rev(MAG))) + 
+      geom_tile(aes(fill = log10(lfq_norm_cum))) + 
+      scale_fill_gradientn(name = "Log Relative Protein Abundance", colours=rev(pal)) + 
+      facet_grid(cols = vars(time_hr), scales="free_x") + 
+      theme_bw() +
+      theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+
+    
 
 # combine with total protein quantification 
     prot.quant <- read_csv(file =  "raw_data/metaproteomics_results_v2/SAOB_SIP_protein_extract_quant.csv") %>%
@@ -183,19 +203,22 @@ lfq <- lfq %>%
         scale_fill_gradientn(name = "Labelled protein conc. (g-13C_prot/L)", colours=rev(pal)) + 
         theme_bw()
     
-      pal <- c(met.brewer("Renoir")[12], met.brewer("Renoir")[3], met.brewer("Renoir")[9], met.brewer("Renoir")[7])
+      pal <- c(met.brewer("Renoir")[12], met.brewer("Renoir")[3], met.brewer("Renoir")[10], met.brewer("Renoir")[7])
         
       
-      ggplot( mag.tp.summ %>% rbind(tibble( MAG = unique(mag.tp.summ$MAG), time_hr = 0, mag_lab_prot = 0)),
+      mag_incorporation_plot <- ggplot( mag.tp.summ %>% rbind(tibble( MAG = unique(mag.tp.summ$MAG), time_hr = 0, mag_lab_prot = 0)),
               aes(x = time_hr, y = mag_lab_prot, group = MAG)) +
         geom_line(aes(color = MAG), size = 1) + 
         geom_point(aes(color = MAG)) + 
         geom_ribbon(aes(x = time_hr, ymin = mag_lab_prot - mag_lab_prot_std,
                         ymax = mag_lab_prot + mag_lab_prot_std, group = MAG, fill = MAG), alpha = 0.25) +
-        scale_color_manual(values = pal) + 
+        scale_color_manual(values = pal, labels=c("All other groups", "DTU068", "METHANO1", "METHANO2")) + 
         scale_fill_manual(values = pal) + 
         ylab("Labelled protein conc. (mg 13C-prot/L)") + 
         xlab("Time (hr)") + 
-        theme_bw()
+        guides(color=guide_legend("Group"), fill = "none") +
+        theme_bw() +
+        theme(legend.position = "top", axis.title.x = element_text(face="bold", size=12), axis.title.y=element_text(face="bold", size=12), legend.title = element_text(face="bold", size=12), axis.text.x = element_text(size=10), axis.text.y=element_text(size=10), legend.text = element_text(size=10))
 
+      ggsave("figures/SIP_MAG_incorporation.png", mag_incorporation_plot, width=20, height=15, units=c("cm"))
  
