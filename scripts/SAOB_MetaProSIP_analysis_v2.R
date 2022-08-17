@@ -152,14 +152,25 @@ lfq <- lfq %>%
       filter(n_proteins > 50) %>% 
       pull(MAG)
     
-      lfq.mag %>% 
+    # read in table of MAG names and join with the top 10 names 
+    mag_names <- read.csv("results/bin_tables/SAOB_final_bins_info_names_table.csv") %>% 
+      select(bin, specific_name) %>% 
+      mutate(MAG = gsub("\\.", "_", bin)) %>% 
+      mutate(MAG = sub("-", "_", MAG)) %>% 
+      select(MAG, specific_name)
+    
+      time_labels <- c("24 hr", "144 hr", "408 hr")
+      names(time_labels) <- c("24", "144", "408")
+    
+      mag_relative_activity <- lfq.mag %>% 
       filter(MAG %in% top_10_mags) %>% 
-      ggplot(aes(x=prep_id, y = fct_rev(MAG))) + 
+      left_join(mag_names) %>% 
+      ggplot(aes(x=prep_id, y = fct_rev(specific_name))) + 
       geom_tile(aes(fill = log10(lfq_norm_cum))) + 
-      scale_fill_gradientn(name = "Log Relative Protein Abundance", colours=rev(pal)) + 
-      facet_grid(cols = vars(time_hr), scales="free_x") + 
+      scale_fill_gradientn(name = "Log Relative \nProtein Abundance", colours=rev(pal)) + 
+      facet_grid(cols = vars(time_hr), scales="free_x", labeller = labeller(time_hr = time_labels)) + 
       theme_bw() +
-      theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+      theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"))
 
     
 
@@ -220,5 +231,11 @@ lfq <- lfq %>%
         theme_bw() +
         theme(legend.position = "top", axis.title.x = element_text(face="bold", size=12), axis.title.y=element_text(face="bold", size=12), legend.title = element_text(face="bold", size=12), axis.text.x = element_text(size=10), axis.text.y=element_text(size=10), legend.text = element_text(size=10))
 
+      # output figures
+      
+      # relative activity mag 
+      ggsave("figures/MAG_relative_activity.png", mag_relative_activity, width=15, height=20, units=c("cm"))
+      
+      # sip mag incorporation
       ggsave("figures/SIP_MAG_incorporation.png", mag_incorporation_plot, width=20, height=15, units=c("cm"))
  
