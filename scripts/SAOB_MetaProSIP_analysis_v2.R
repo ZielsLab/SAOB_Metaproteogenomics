@@ -143,8 +143,9 @@ lfq <- lfq %>%
       facet_grid(cols = vars(time_hr), scales = "free_x") + 
       theme_bw()
     
-    # find top 10 active mags
-    top_10_mags <- lfq.mag %>% 
+    # find top active mags 
+    # more than 50 labelled proteins in the _18 prep id of last timepoint
+    top_mags <- lfq.mag %>% 
       filter(prep_id == '_18') %>% 
       select(MAG, n_proteins) %>% 
       group_by(MAG) %>% 
@@ -163,7 +164,7 @@ lfq <- lfq %>%
       names(time_labels) <- c("24", "144", "408")
     
       mag_relative_activity <- lfq.mag %>% 
-      filter(MAG %in% top_10_mags) %>% 
+      filter(MAG %in% top_mags) %>% 
       left_join(mag_names) %>% 
       ggplot(aes(x=prep_id, y = fct_rev(specific_name))) + 
       geom_tile(aes(fill = log10(lfq_norm_cum))) + 
