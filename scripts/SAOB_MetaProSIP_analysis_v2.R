@@ -2,6 +2,7 @@ library(tidyverse)
 library(readxl)
 library(PNWColors)
 library(MetBrewer)
+library(Peptides)
 
 # Set Paths
 
@@ -31,6 +32,10 @@ library(MetBrewer)
    mutate(prep_id = sapply(strsplit(prep_id, "_10Jan22"), `[`, 1)) %>%
    mutate(prep_id = as.character(prep_id)) %>%
    left_join(meta, by = "prep_id") 
+ 
+ pept %>% 
+   mutate(mw = mw(peptide, monoisotopic = FALSE, avgScale = "expasy", label = "none", aaShift = NULL)) %>% 
+   select(peptide, mw)
   
  # Filter for unique peptides
  pept <- pept %>%
