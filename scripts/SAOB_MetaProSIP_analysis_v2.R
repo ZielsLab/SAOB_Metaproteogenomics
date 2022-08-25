@@ -3,6 +3,7 @@ library(readxl)
 library(PNWColors)
 library(MetBrewer)
 library(Peptides)
+library(ggpubr)
 
 # Set Paths
 
@@ -141,12 +142,80 @@ lfq <- lfq %>%
               lfq_norm_cum = sum(lfq_norm)) %>% 
     drop_na()
   
+  
     # Mean MAG LFQ
     ggplot(lfq.mag, aes(x = prep_id, y = MAG)) + 
       geom_tile(aes(fill = log10(lfq_norm_cum))) + 
       scale_fill_gradientn(name = "Relative protein ab. (log)", colours=rev(pal)) + 
       facet_grid(cols = vars(time_hr), scales = "free_x") + 
       theme_bw()
+    
+    # combine with total protein quantification 
+    prot.quant <- read_csv(file =  "raw_data/metaproteomics_results_v2/SAOB_SIP_protein_extract_quant.csv") %>%
+      left_join(meta, by = "sample") %>%
+      right_join(lfq.mag, by = "prep_id") %>%
+      mutate(mag.prot = protein_ug / 10 * lfq_norm_cum) %>%  #divide proteins (ug) by 10ml to get mg prot/L
+      group_by(MAG, time_hr = time_hr.y) %>%
+      summarise(mean_prot_mag = mean(mag.prot),
+                stdev_prot_mag = sd(mag.prot) ) %>% #summarize total protein quantification per mag over time
+      mutate(MAG = tolower(MAG))
+    
+    # Total protein quant
+    ggplot(prot.quant, aes(x = as.factor(time_hr), y = MAG)) + 
+      geom_tile(aes(fill = mean_prot_mag)) + 
+      scale_fill_gradientn(name = "Protein (mg/L)", colours=rev(pal)) + 
+      theme_bw()
+    
+    mag.tp <- mag %>% mutate(MAG = tolower(MAG)) %>% #total quant of labeled protein carbon per mag
+      drop_na() %>%
+      group_by(MAG, time_hr) %>%
+      summarise(mean_ria_mag = mean(mean_RIA2)/100,
+                stdev_ria_mag = sd(mean_RIA2)/100, 
+                mean_lr_mag = mean(mean_lr) ,
+                stdev_lr_mag = sd(mean_lr)) %>% #determine mean label ratio and RIA per mag over time
+      left_join(prot.quant, by = c("MAG", "time_hr")) %>%
+      mutate(mag_lab_prot = mean_prot_mag  * mean_lr_mag * mean_ria_mag) %>%
+      mutate(mag_lab_prot_std = mag_lab_prot * sqrt((stdev_ria_mag/3/mean_ria_mag)^2 + (stdev_lr_mag/3/mean_lr_mag)^2 + (stdev_prot_mag/3/mean_prot_mag)^2 ) )
+    
+    mag.3.tp <- mag.tp %>% filter(MAG %in% c("bin14_1", "bin4_1", "bin4_2"))
+    mag.other.tp <- mag.tp %>% filter(!(MAG %in% c("bin14_1", "bin4_1", "bin4_2"))) %>%
+      mutate(MAG = "All_others") %>%
+      group_by(time_hr) %>%
+      summarize(MAG = MAG, time_hr = time_hr, mag_lab_prot = sum(mag_lab_prot))
+    
+    mag.tp.summ <- rbind(mag.3.tp, mag.other.tp)
+    # Plot absolute labeled protein per MAG
+    ggplot(mag.tp.summ, aes(x = as.factor(time_hr), y = MAG)) + 
+      geom_tile(aes(fill = mag_lab_prot)) + 
+      scale_fill_gradientn(name = "Labelled protein conc. (g-13C_prot/L)", colours=rev(pal)) + 
+      theme_bw()
+    
+    pal <- c(met.brewer("Renoir")[12], met.brewer("Renoir")[3], met.brewer("Renoir")[10], met.brewer("Renoir")[7])
+    
+    
+    mag_incorporation_plot <- ggplot( mag.tp.summ %>% rbind(tibble( MAG = unique(mag.tp.summ$MAG), time_hr = 0, mag_lab_prot = 0)),
+                                      aes(x = time_hr, y = mag_lab_prot, group = MAG)) +
+      geom_line(aes(color = MAG), size = 1) + 
+      geom_point(aes(color = MAG)) + 
+      geom_ribbon(aes(x = time_hr, ymin = mag_lab_prot - mag_lab_prot_std,
+                      ymax = mag_lab_prot + mag_lab_prot_std, group = MAG, fill = MAG), alpha = 0.25) +
+      scale_color_manual(values = pal, labels=c("All other groups", "DTU068", "METHANO1", "METHANO2")) + 
+      scale_fill_manual(values = pal) + 
+      ylab("Labelled protein conc. (mg 13C-prot/L)") + 
+      xlab("Time (hr)") + 
+      guides(color=guide_legend("Group"), fill = "none") +
+      theme_pubr() +
+      theme(legend.position = "none", axis.title.x = element_text(face="bold", size=12), axis.title.y=element_text(face="bold", size=12), legend.title = element_text(face="bold", size=12), axis.text.x = element_text(size=10), axis.text.y=element_text(size=10))
+    
+    mag_incorporation_plot_labels <- mag_incorporation_plot + 
+      annotate(geom="text", x=190, y=6, label="Methanothermobacter_1", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[10])) +
+      annotate(geom='text', x=250, y=3.5, label="DTU068", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[3])) +
+      annotate(geom="text", x=350, y=2.5, label="Methanothermobacter_2", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[7])) +
+      annotate(geom="text", x=300, y=.7, label="All other genomes", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[12]))
+    
+    mag_incorporation_plot_labels
+    
+# plots with mag names - top mags for relative activity and labelling ratio, and supplementary plots for all MAGs
     
     # find top active mags 
     # more than 50 labelled proteins in the _18 prep id of last timepoint
@@ -168,88 +237,89 @@ lfq <- lfq %>%
       time_labels <- c("24 hr", "144 hr", "408 hr")
       names(time_labels) <- c("24", "144", "408")
     
-      mag_relative_activity <- lfq.mag %>% 
+      mag_relative_activity_top <- lfq.mag %>% 
       filter(MAG %in% top_mags) %>% 
       left_join(mag_names) %>% 
       ggplot(aes(x=prep_id, y = fct_rev(specific_name))) + 
       geom_tile(aes(fill = log10(lfq_norm_cum))) + 
       scale_fill_gradientn(name = "Log Relative \nProtein Abundance", colours=rev(pal)) + 
       facet_grid(cols = vars(time_hr), scales="free_x", labeller = labeller(time_hr = time_labels)) + 
-      theme_bw() +
-      theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"))
-
+      theme_pubr() +
+      theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"), legend.position="bottom")
+      
+      mag_relative_activity_top
+      
+      mag_relative_activity_all <- lfq.mag %>% 
+        left_join(mag_names) %>% 
+        ggplot(aes(x=prep_id, y = fct_rev(specific_name))) + 
+        geom_tile(aes(fill = log10(lfq_norm_cum))) + 
+        scale_fill_gradientn(name = "Log Relative \nProtein Abundance", colours=rev(pal)) + 
+        facet_grid(cols = vars(time_hr), scales="free_x", labeller = labeller(time_hr = time_labels)) + 
+        theme_pubr() +
+        theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"), legend.position="bottom")
     
 
-# combine with total protein quantification 
-    prot.quant <- read_csv(file =  "raw_data/metaproteomics_results_v2/SAOB_SIP_protein_extract_quant.csv") %>%
-      left_join(meta, by = "sample") %>%
-      right_join(lfq.mag, by = "prep_id") %>%
-      mutate(mag.prot = protein_ug / 10 * lfq_norm_cum) %>%  #divide proteins (ug) by 10ml to get mg prot/L
-      group_by(MAG, time_hr = time_hr.y) %>%
-        summarise(mean_prot_mag = mean(mag.prot),
-                  stdev_prot_mag = sd(mag.prot) ) %>% #summarize total protein quantification per mag over time
-      mutate(MAG = tolower(MAG))
+      labelling_ratio_all <- mag %>%
+        left_join(mag_names) %>% 
+        ggplot(aes(x=prep_id, y= fct_rev(specific_name))) +
+        geom_tile(aes(fill=mean_lr)) +
+        scale_fill_gradientn(name = "Mean Labelling Ratio", colours=rev(pnw_palette("Starfish", 1000))) + 
+        facet_grid(cols = vars(time_hr), scales = "free_x", labeller = labeller(time_hr = time_labels)) + 
+        theme_pubr() +
+        theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"), legend.position="bottom")
+      
+      mean_RIA_all <- mag %>% 
+        left_join(mag_names) %>% 
+        ggplot(aes(x=prep_id, y=fct_rev(specific_name))) +
+        geom_tile(aes(fill=mean_RIA2)) +
+        scale_fill_gradientn(name = "Mean RIA", colours=rev(pnw_palette("Shuksan", 1000))) + 
+        facet_grid(cols = vars(time_hr), scales = "free_x", labeller = labeller(time_hr = time_labels)) + 
+        theme_pubr() +
+        theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"), legend.position="bottom")
+      
+      mag_lr_top <- mag %>%
+        filter(MAG %in% top_mags) %>% 
+        left_join(mag_names) %>% 
+        ggplot(aes(x= prep_id, y= fct_rev(specific_name))) +
+        geom_tile(aes(fill = log10(n_peptides))) + 
+        scale_fill_gradientn(name = "Number of Proteins \nLabelled (log10)", colours=rev(pnw_palette("Lake", 1000))) + 
+        facet_grid(cols = vars(time_hr), scales = "free_x", labeller = labeller(time_hr = time_labels)) + 
+        theme_pubr() +
+        theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"), legend.position="bottom")
     
-        # Total protein quant
-        ggplot(prot.quant, aes(x = as.factor(time_hr), y = MAG)) + 
-          geom_tile(aes(fill = mean_prot_mag)) + 
-          scale_fill_gradientn(name = "Protein (mg/L)", colours=rev(pal)) + 
-          theme_bw()
-    
-    mag.tp <- mag %>% mutate(MAG = tolower(MAG)) %>% #total quant of labeled protein carbon per mag
-      drop_na() %>%
-      group_by(MAG, time_hr) %>%
-      summarise(mean_ria_mag = mean(mean_RIA2)/100,
-                stdev_ria_mag = sd(mean_RIA2)/100, 
-                mean_lr_mag = mean(mean_lr) ,
-                stdev_lr_mag = sd(mean_lr)) %>% #determine mean label ratio and RIA per mag over time
-      left_join(prot.quant, by = c("MAG", "time_hr")) %>%
-      mutate(mag_lab_prot = mean_prot_mag  * mean_lr_mag * mean_ria_mag) %>%
-      mutate(mag_lab_prot_std = mag_lab_prot * sqrt((stdev_ria_mag/3/mean_ria_mag)^2 + (stdev_lr_mag/3/mean_lr_mag)^2 + (stdev_prot_mag/3/mean_prot_mag)^2 ) )
-
-    mag.3.tp <- mag.tp %>% filter(MAG %in% c("bin14_1", "bin4_1", "bin4_2"))
-    mag.other.tp <- mag.tp %>% filter(!(MAG %in% c("bin14_1", "bin4_1", "bin4_2"))) %>%
-    mutate(MAG = "All_others") %>%
-      group_by(time_hr) %>%
-      summarize(MAG = MAG, time_hr = time_hr, mag_lab_prot = sum(mag_lab_prot))
-     
-    mag.tp.summ <- rbind(mag.3.tp, mag.other.tp)
-      # Plot absolute labeled protein per MAG
-      ggplot(mag.tp.summ, aes(x = as.factor(time_hr), y = MAG)) + 
-        geom_tile(aes(fill = mag_lab_prot)) + 
-        scale_fill_gradientn(name = "Labelled protein conc. (g-13C_prot/L)", colours=rev(pal)) + 
-        theme_bw()
-    
-      pal <- c(met.brewer("Renoir")[12], met.brewer("Renoir")[3], met.brewer("Renoir")[10], met.brewer("Renoir")[7])
+      
+      mag_lr_all <- mag %>% 
+        left_join(mag_names) %>% 
+        ggplot(aes(x= prep_id, y= fct_rev(specific_name))) +
+        geom_tile(aes(fill = log10(n_peptides))) + 
+        scale_fill_gradientn(name = "Number of Proteins \nLabelled (log10)", colours=rev(pnw_palette("Lake", 1000))) + 
+        facet_grid(cols = vars(time_hr), scales = "free_x", labeller = labeller(time_hr = time_labels)) + 
+        theme_pubr() +
+        theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"), legend.position="bottom")
         
       
-      mag_incorporation_plot <- ggplot( mag.tp.summ %>% rbind(tibble( MAG = unique(mag.tp.summ$MAG), time_hr = 0, mag_lab_prot = 0)),
-              aes(x = time_hr, y = mag_lab_prot, group = MAG)) +
-        geom_line(aes(color = MAG), size = 1) + 
-        geom_point(aes(color = MAG)) + 
-        geom_ribbon(aes(x = time_hr, ymin = mag_lab_prot - mag_lab_prot_std,
-                        ymax = mag_lab_prot + mag_lab_prot_std, group = MAG, fill = MAG), alpha = 0.25) +
-        scale_color_manual(values = pal, labels=c("All other groups", "DTU068", "METHANO1", "METHANO2")) + 
-        scale_fill_manual(values = pal) + 
-        ylab("Labelled protein conc. (mg 13C-prot/L)") + 
-        xlab("Time (hr)") + 
-        guides(color=guide_legend("Group"), fill = "none") +
-        theme_bw() +
-        theme(legend.position = "top", axis.title.x = element_text(face="bold", size=12), axis.title.y=element_text(face="bold", size=12), legend.title = element_text(face="bold", size=12), axis.text.x = element_text(size=10), axis.text.y=element_text(size=10), legend.text = element_text(size=10))
-      
-      
-      mag_incorporation_plot_labels <- mag_incorporation_plot + 
-      annotate(geom="text", x=190, y=6, label="Methanothermobacter_1", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[10])) +
-      annotate(geom='text', x=250, y=3.5, label="DTU068", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[3])) +
-      annotate(geom="text", x=350, y=2.5, label="Methanothermobacter_2", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[7])) +
-      annotate(geom="text", x=300, y=.7, label="All other genomes", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[12])) +
-        theme(legend.position=c("none"))
+      mag %>%
+        left_join(mag_names) %>% 
+        ggplot(aes(x= prep_id, y= fct_rev(specific_name))) +
+        geom_tile(aes(fill = log10(n_peptides))) + 
+        scale_fill_gradientn(colours=rev(pal)) + 
+        facet_grid(cols = vars(time_hr), scales = "free_x") + 
+        theme_bw()
 
 
+      # arrange grids 
+      top_mag_activity_lr <- ggarrange(mag_relative_activity_top, mag_lr_top, labels = c("A", "B"))
+      all_mag_supplement <- ggarrange(mag_relative_activity_all, mag_lr_all, labelling_ratio_all, mean_RIA_all, labels=c("A", "B", "C", "D"), ncol = 2, nrow=2)
+      
+      all_mag_supplement
+      
       # output figures
       
-      # relative activity mag 
+      # relative activity and lr for top mags 
       ggsave("figures/MAG_relative_activity.png", mag_relative_activity, width=15, height=20, units=c("cm"))
+      
+      # supplement grid for all MAGs - relative activity, # proteins labelled, mean LR, mean RIA 
+      ggsave("figures/all_mags_microcosm_dynamics_supplement.png", all_mag_supplement, width=40, height=45, units=c("cm"))
       
       # sip mag incorporation
       ggsave("figures/SIP_MAG_incorporation.png", mag_incorporation_plot, width=20, height=15, units=c("cm"))
