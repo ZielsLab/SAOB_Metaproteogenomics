@@ -26,9 +26,9 @@ done
 Then create contigs databases for each reformatted fasta file: 
 
 ```
-for file in *-reformatted.fasta; 
-    do name=$(basename $file -reformatted.fasta); 
-    anvi-gen-contigs-database -f $file -o ../contigs_dbs/$name.db; 
+for file in *.annot.gff; 
+    do name=$(basename $file .annot.gff); 
+    python3 ../../../scripts/metapathways-tsv-to-anvio.py $file --anvio $name-anvio-table.tsv --annotation $name-annotation-table.tsv; 
 done
 ```
 
