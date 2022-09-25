@@ -1,6 +1,6 @@
 # Methanothermobacter Pangenomics with Anvio 
 
-This page documents steps for creating a pangeome of Methanothermobacter references and genomes assembled in this study using Anvi'o. The ultimate goal of this analysis is to identify core and accessory sets of groups of proteins to then look at the protein expression dyanmics of these groups of proteins of the Methanothermobacter in the SIP microcosm experiment. 
+This page documents steps for creating a pangeome of Methanothermobacter references and genomes assembled in this study using Anvi'o. The ultimate goal of this analysis is to identify core and accessory sets of groups of proteins to then look at the protein expression dyanmics of these groups of proteins of the Methanothermobacter in the SIP microcosm experiment. This workflow follows the Anvi'o pangenomics workflow: https://merenlab.org/2016/11/08/pangenomics-v2/ 
 
 ## Collecting reference genomes
 
@@ -48,7 +48,22 @@ for file in *.fasta;
     do name=$(basename $file .fasta);
     anvi-gen-contigs-database -f $file -o ../contigs_dbs/$name.db --external-gene-calls $name-anvio-table.tsv;
 done
+```
 
-### 
+Then create an anvi'o genomes storage for the entire collection of genomes. Make a list of all the contigs databases with `for file in *.db; do name=$(basename $file .db); echo -e $name"\t"$file; done > methano_genomes_storage.txt`, append with colum names `name` and `contigs_db_path`, and then create the genomes storage: `anvi-gen-genomes-storage -e methano_genomes_storage.txt -o METHANO_GENOMES.db`
+
+## Running the Pangenome Analysis
+
+```
+anvi-pan-genome -g METHANO_GENOMES.db \
+                --project-name "Methanothermobacter_Pan" \
+                --output-dir METHANO \
+                --num-threads 6 \
+                --minbit 0.5 \
+                --mcl-inflation 2
+```
+
+This will use DIAMOND to perform all-v-all comparisons and an MCL inflation score of 2. The higher the MCL inflation score (such as 10) is for very closely related strains, and the lower MCL inflation score of 2 is for more distantly related groups of genomes. 
+
 ### 
 ### 

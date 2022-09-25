@@ -39,8 +39,9 @@ new_df['locus_tag'] = new_df['locus_tag'].str.split(r'\s*ID=\s*|\s*\;\s*').str[1
 new_df['source'] = subset_df['source'].str.split(r'\s*:\s*').str[0]
 new_df['version'] = subset_df['source'].str.split(r'\s*:\s*').str[1]
 new_df['gene_callers_id'] = np.arange(len(new_df))
+new_df['source'] = new_df['source'].replace(["Prodigal"], ["prodigal"])
 
-final_df = new_df.loc[new_df['source'] == 'Prodigal']
+final_df = new_df.loc[new_df['source'] == 'prodigal']
 
 anvio_df = final_df[['gene_callers_id', 'contig', 'start', 'stop', 'direction', 'partial', 'source', 'version']]
 annotation_df = final_df[['gene_callers_id', 'locus_tag', 'contig', 'start', 'stop', 'direction', 'partial', 'source', 'version']]
