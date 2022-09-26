@@ -1,5 +1,3 @@
-
-
 #!/usr/bin/env python3
 
 import argparse, os
@@ -28,7 +26,7 @@ OUT_ANNO = open(args.annotation, "w")
 
 # Parse the TSV file as PD DF
 df = pd.read_csv(MPW, sep="\t", names=['contig', 'source', 'type', 'start', 'stop', 'call_type', 'strand', 'partial', 'locus_tag'])
-subset_df = df[['locus_tag', 'contig', 'start', 'stop', 'strand', 'partial', 'call_type' 'source']]
+subset_df = df[['locus_tag', 'contig', 'start', 'stop', 'strand', 'partial', 'call_type', 'source']]
 
 new_df = df[['locus_tag', 'contig']]
 new_df['start'] = subset_df['start'] - 1
@@ -40,7 +38,7 @@ new_df['source'] = subset_df['source'].str.split(r'\s*:\s*').str[0]
 new_df['version'] = subset_df['source'].str.split(r'\s*:\s*').str[1]
 new_df['gene_callers_id'] = np.arange(len(new_df))
 new_df['source'] = new_df['source'].replace(["Prodigal"], ["prodigal"])
-new_df['call_type'] = subset_df['call_type']
+new_df['call_type'] = subset_df['call_type'].replace(['.'], ['1'])
 
 final_df = new_df.loc[new_df['source'] == 'prodigal']
 

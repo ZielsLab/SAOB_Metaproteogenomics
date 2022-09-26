@@ -37,7 +37,7 @@ The GFF files from Metapathways from the 3 Methanothermobacter SAOB study genome
 ```
 for file in *.annot.gff; 
     do name=$(basename $file .annot.gff); 
-    python3 ../../../scripts/metapathways-tsv-to-anvio.py $file --annotation $name-anvio-table.tsv; 
+    python3 ../../../scripts/metapathways-tsv-to-anvio.py $file --anvio $name-anvio-table.tsv --annotation $name-annotation-table.tsv; 
 done
 ```
 
@@ -52,7 +52,7 @@ done
 
 ### Functional Annotation 
 
-To add functional annotation information, we do this to each contigs database. The different options you can populate a contigs database with are [described here](https://anvio.org/help/main/artifacts/contigs-db/). For this pangenomics analysis, we will populate each contigs database with the HMM collections for archaea and the NCBI COGs annotations.
+To add functional annotation information, we do this to each contigs database. The different options you can populate a contigs database with are [described here](https://anvio.org/help/main/artifacts/contigs-db/). For this pangenomics analysis, we will populate each contigs database with the HMM collections for archaea and the KEGG Kofam HMMs for functional annotation. 
 
 First run the archaeal HMMs (doesn't make sense to run all the others because these are all Methanothermobacter genomes)
 
@@ -62,11 +62,11 @@ for file in *.db; do
 done
 ```
 
-Then add the NCBI COGs annotations: 
+Then run KEGG Kofam for each contigs database:
 
 ```
 for file in *.db; do 
-    anvi-run-ncbi-cogs -c $file -T 6; 
+    anvi-run-kofam -c $file -T 6; 
 done
 ```
 
