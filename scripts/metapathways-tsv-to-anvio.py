@@ -28,7 +28,7 @@ OUT_ANNO = open(args.annotation, "w")
 
 # Parse the TSV file as PD DF
 df = pd.read_csv(MPW, sep="\t", names=['contig', 'source', 'type', 'start', 'stop', 'call_type', 'strand', 'partial', 'locus_tag'])
-subset_df = df[['locus_tag', 'contig', 'start', 'stop', 'strand', 'partial', 'source']]
+subset_df = df[['locus_tag', 'contig', 'start', 'stop', 'strand', 'partial', 'call_type' 'source']]
 
 new_df = df[['locus_tag', 'contig']]
 new_df['start'] = subset_df['start'] - 1
@@ -40,10 +40,11 @@ new_df['source'] = subset_df['source'].str.split(r'\s*:\s*').str[0]
 new_df['version'] = subset_df['source'].str.split(r'\s*:\s*').str[1]
 new_df['gene_callers_id'] = np.arange(len(new_df))
 new_df['source'] = new_df['source'].replace(["Prodigal"], ["prodigal"])
+new_df['call_type'] = subset_df['call_type']
 
 final_df = new_df.loc[new_df['source'] == 'prodigal']
 
-anvio_df = final_df[['gene_callers_id', 'contig', 'start', 'stop', 'direction', 'partial', 'source', 'version']]
+anvio_df = final_df[['gene_callers_id', 'contig', 'start', 'stop', 'direction', 'partial', 'call_type', 'source', 'version']]
 annotation_df = final_df[['gene_callers_id', 'locus_tag', 'contig', 'start', 'stop', 'direction', 'partial', 'source', 'version']]
 
 anvio_df.to_csv(OUT_ANVIO, sep="\t", index=False)
