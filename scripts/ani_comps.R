@@ -1,5 +1,7 @@
 library(tidyverse)
 library(viridis)
+library(ggpubr)
+library(gridExtra)
 
 # ANI Comparisons between lineages for DTU and Methanothermobacter to references in the GTDB - ordered by GTDB species number
 
@@ -16,13 +18,17 @@ dtu_comps_order <- c("GCA_001513545.1", "GCA_003445655.1", "GCA_012521605.1", "G
 
 dtu_comps$genome1 <- factor(dtu_comps$genome1, levels=c(dtu_comps_order))
 
-dtu_comps %>% 
-  ggplot(aes(x=genome1, y=as_factor(genome2), fill=ANI)) +
+dtu_ani_plot <- dtu_comps %>% 
+  ggplot(aes(x=genome1, y=fct_rev(genome2), fill=ANI)) +
   geom_raster() +
-  scale_fill_viridis(limits=c(90, 100), option = "D") +
+  scale_fill_viridis(limits=c(90, 100), option = "D", name = "ANI") +
   scale_x_discrete(expand=c(0,0)) + 
-  scale_y_discrete(expand=c(0,0)) + 
-  theme(axis.text.x= element_text(angle=85, hjust=1))
+  scale_y_discrete(expand=c(0,0), labels=c("DTU2", "DTU1")) + 
+  theme_pubr() +
+  theme(axis.text.x= element_text(angle=85, hjust=1, colour=c("#E69F00", "#E69F00", "#E69F00", "#56B4E9", "#009E73", "#CC79A7"), face="bold"), axis.title.x=element_blank(), axis.title.y=element_blank(), legend.position="top", axis.text.y=element_text(face="bold"), legend.key.width=unit(3, "cm"))
+  
+
+ggsave("figures/dtu_ani_comparisons.png", dtu_ani_plot, width=20, height=15, units=c("cm"))
 
 # Methano
 methano_comps <- read.table("results/methano_pangenomics/saob_methano_comps.txt", header=FALSE, sep="\t") %>% 
