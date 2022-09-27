@@ -58,22 +58,61 @@ First run the archaeal HMMs (doesn't make sense to run all the others because th
 
 ```
 for file in *.db; do
-    anvi-run-hmms -c $file -I Archaea_76; 
+    anvi-run-hmms -c $file -I Archaea_76 -T 6; 
 done
 ```
 
-Then run KEGG Kofam for each contigs database:
+For getting KEGG Kofam annotations, we can export the FASTAs from Anvi'o with the specific gene call IDs, and annotate with KofamKOALA. Anvio 7.1 allows for annotating with the KEGG Kofam directly within Anvi'o but I've had issues with installing this. So the plan is to annotate this outside of anvi'o, and then import those functions. 
 
+### Functional Annotation with KofamKOALA 
+
+First export the nucleotide and AA sequences for all the gene calls for each contigs db: 
+
+Genes:
+```
+for file in *.db; do
+    name=$(basename $file .db);
+    anvi-get-sequences-for-gene-calls -c $file -o annotations/$name.genes.fna; 
+done
+```
+
+Proteins:
 ```
 for file in *.db; do 
-    anvi-run-kofam -c $file -T 6; 
+    name=$(basename $file .db);
+    anvi-get-sequences-for-gene-calls -c $file --get-aa-sequences -o annotations/$name.proteins.faa; 
 done
 ```
 
-Then create an anvi'o genomes storage for the entire collection of genomes. Make a list of all the contigs databases with `for file in *.db; do name=$(basename $file .db); echo -e $name"\t"$file; done > methano_genomes_storage.txt`, append with colum names `name` and `contigs_db_path`, and then create the genomes storage: `anvi-gen-genomes-storage -e methano_genomes_storage.txt -o METHANO_GENOMES.db`
+Then combine the protein files all together into one multi FASTA where the header also has the genome file information. 
+
+```
+for file in *.proteins.faa; do 
+    GENOME=`basename ${file%.proteins.faa}`; sed -i "s|^>|>${GENOME}~|" $file; 
+done
+
+cat *.faa > all-methanothermobacter-proteins.faa
+```
+
+Then run KofamKOALA on the combined set of proteins: 
+
+```
+./exec_annotation all-methanothermobacter-proteins.faa;
+    -p profiles/;
+    -k ko_list;
+    -o all-methanotherobacter-proteins-kofamkoala-annots.txt; 
+    --cpu 8;
+```
 
 
-## Running the Pangenome Analysis
+
+## Creating the Pangenome
+
+When the above annotations and configurations to all the contigs dbs are finished, create an anvi'o genomes storage for the entire collection of genomes. Make a list of all the contigs databases with `for file in *.db; do name=$(basename $file .db); echo -e $name"\t"$file; done > methano_genomes_storage.txt`, append with colum names `name` and `contigs_db_path`, and then create the genomes storage. Or manually create this file so that the genome names have something more unique instead of the filename. 
+
+```
+anvi-gen-genomes-storage -e methano_genomes_storage.txt -o METHANO_GENOMES.db
+```
 
 ```
 anvi-pan-genome -g METHANO_GENOMES.db \
@@ -81,7 +120,7 @@ anvi-pan-genome -g METHANO_GENOMES.db \
                 --output-dir METHANO \
                 --num-threads 6 \
                 --minbit 0.5 \
-                --mcl-inflation 2
+                --mcl-inflation 3
 ```
 
 This will use DIAMOND to perform all-v-all comparisons and an MCL inflation score of 2. The higher the MCL inflation score (such as 10) is for very closely related strains, and the lower MCL inflation score of 2 is for more distantly related groups of genomes. 
@@ -109,5 +148,3 @@ anvi-display-pan -p METHANO/Methanothermobacter_Pan-PAN.db -g METHANO_GENOMES.db
 ```
 
 Then start your browser on your local computer and type the address `http://localhost:8080` 
-
-### 
