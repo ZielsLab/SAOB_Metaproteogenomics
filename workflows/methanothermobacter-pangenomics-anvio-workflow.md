@@ -104,6 +104,7 @@ Then run KofamKOALA on the combined set of proteins:
     --cpu 8;
 ```
 
+Or use the `methanothermobacter-kofam-annotate.sh` batch executable.
 
 
 ## Creating the Pangenome
