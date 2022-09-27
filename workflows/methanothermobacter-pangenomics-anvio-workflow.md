@@ -64,8 +64,6 @@ done
 
 For getting KEGG Kofam annotations, we can export the FASTAs from Anvi'o with the specific gene call IDs, and annotate with KofamKOALA. Anvio 7.1 allows for annotating with the KEGG Kofam directly within Anvi'o but I've had issues with installing this. So the plan is to annotate this outside of anvi'o, and then import those functions. 
 
-### Functional Annotation with KofamKOALA 
-
 First export the nucleotide and AA sequences for all the gene calls for each contigs db: 
 
 Genes:
