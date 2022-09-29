@@ -308,6 +308,7 @@ lfq <- lfq %>%
 
 
       # arrange grids 
+      top_mag_activity_lr
       top_mag_activity_lr <- ggarrange(mag_relative_activity_top, mag_lr_top, labels = c("A", "B"))
       all_mag_supplement <- ggarrange(mag_relative_activity_all, mag_lr_all, labelling_ratio_all, mean_RIA_all, labels=c("A", "B", "C", "D"), ncol = 2, nrow=2)
       
@@ -316,14 +317,21 @@ lfq <- lfq %>%
       # output figures
       
       # relative activity and lr for top mags 
+      mag_relative_activity
       ggsave("figures/MAG_relative_activity.png", mag_relative_activity, width=15, height=20, units=c("cm"))
+      
+      ggsave("figures/Top_MAGs_activity.png", top_mag_activity_lr, width=35, height=20, units=c("cm"))
       
       # supplement grid for all MAGs - relative activity, # proteins labelled, mean LR, mean RIA 
       ggsave("figures/all_mags_microcosm_dynamics_supplement.png", all_mag_supplement, width=40, height=45, units=c("cm"))
+      
+      ggsave("figures/Top_MAGs_activity.pdf", top_mag_activity_lr, width=35, height=20, units=c("cm"))
       
       # sip mag incorporation
       ggsave("figures/SIP_MAG_incorporation.png", mag_incorporation_plot, width=20, height=15, units=c("cm"))
  
       # sip mag incorporation figure with labels
       ggsave("figures/SIP_MAG_incorporation_labels.png", mag_incorporation_plot_labels, width=20, height=15, units=c("cm"))
+      
+      ggsave("figures/SIP_MAG_incorporation_labels.pdf", mag_incorporation_plot_labels, width=20, height=15, units=c("cm"))
       
