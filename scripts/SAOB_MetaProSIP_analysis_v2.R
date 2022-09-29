@@ -209,7 +209,7 @@ lfq <- lfq %>%
     
     mag_incorporation_plot_labels <- mag_incorporation_plot + 
       annotate(geom="text", x=190, y=6, label="Methanothermobacter_1", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[10])) +
-      annotate(geom='text', x=250, y=3.5, label="DTU068", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[3])) +
+      annotate(geom='text', x=250, y=3.5, label="DTU068_1", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[3])) +
       annotate(geom="text", x=350, y=2.5, label="Methanothermobacter_2", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[7])) +
       annotate(geom="text", x=300, y=.7, label="All other genomes", fontface="bold.italic", size=5, color=c(met.brewer("Renoir")[12]))
     
