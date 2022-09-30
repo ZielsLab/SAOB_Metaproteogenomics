@@ -136,7 +136,7 @@ This will add a layer to the pangenomics visualization output to view pairwise A
 First add a default collection
 
 ```
-anvi-script-add-default-collection -p METHANO/Methanothermobacter_Pan-PAB.db
+anvi-script-add-default-collection -p METHANO/Methanothermobacter_Pan-PAN.db
 ```
 
 You will need this later!
@@ -175,6 +175,6 @@ anvi-summarize -p METHANO/Methanothermobacter_Pan-PAN.db \
 
 ### Quick exploration 
 
-Specifically interested in where the formate dehydrogenases of bin4.2 fall since it's highly expressed after mcr. Had to have simple gene caller IDs so the `annoation-table.tsv` file for each bin produced from the `metapathways` python parser has the simple gene caller ID and the original locus tag. 
+Specifically interested in where the formate dehydrogenases of bin4.2 fall since it's highly expressed after mcr. Had to have simple gene caller IDs so the `annotation-table.tsv` file for each bin produced from the `metapathways` python parser has the simple gene caller ID and the original locus tag. 
 
-Loci of interest: `bin4_2_5_495`, `bin4_2_5_496`, and `bin4_2_5_497`. So `grep -A 5 'bin4_2_5_495' bin4_2-annotation-table.tsv` which starts at gene caller ID 1540 and goes through 1542, so `grep bin4_2 Methanothermobacter_Pan_gene_clusters_summary.txt | grep -A 5 -w '1540'`
+Loci of interest: `bin4_2_5_495`, `bin4_2_5_496`, and `bin4_2_5_497`. So `grep -A 5 'bin4_2_5_495' bin4_2-annotation-table.tsv` which starts at gene caller ID 1506 and goes through 1508, so `grep bin4_2 Methanothermobacter_Pan_gene_clusters_summary.txt | grep -A 5 -w '1506'`
