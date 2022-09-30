@@ -102,7 +102,7 @@ Or use the `methanothermobacter-kofam-annotate.sh` batch executable.
 
 ## Creating the Pangenome
 
-When the above annotations and configurations to all the contigs dbs are finished, create an anvi'o genomes storage for the entire collection of genomes. Make a list of all the contigs databases with `for file in *.db; do name=$(basename $file .db); echo -e $name"\t"$file; done > methano_genomes_storage.txt`, append with colum names `name` and `contigs_db_path`, and then create the genomes storage. Or manually create this file so that the genome names have something more unique instead of the filename. 
+When the above annotations and configurations to all the contigs dbs are finished, create an anvi'o genomes storage for the entire collection of genomes. Make a list of all the contigs databases with `for file in *.db; do name=$(basename $file .db); echo -e $name"\t"$file; done > methano_genomes_storage.txt`, append with colum names `name` and `contigs_db_path`, and then create the genomes storage. Or manually create this file so that the genome names have something more unique instead of the filename.
 
 ```
 anvi-gen-genomes-storage -e methano_genomes_storage.txt -o METHANO_GENOMES.db
@@ -133,6 +133,14 @@ This will add a layer to the pangenomics visualization output to view pairwise A
 
 ## Interactively Visualize the Pangenome 
 
+First add a default collection
+
+```
+anvi-script-add-default-collection -p METHANO/Methanothermobacter_Pan-PAB.db
+```
+
+You will need this later!
+
 If you are on a remote compute cluster, [this tutorial](https://merenlab.org/2015/11/28/visualizing-from-a-server/) explains how to run an SSH tunnel to view the interactive interface. 
 
 Once you are ssh'ed into the cluster, view the pangenome with: 
@@ -152,11 +160,7 @@ Can also save and load states so don't have to redo colors and bin groups.
 
 ## Splitting the pangenome 
 
-Summarize the pangenome groups and the bins that were made for different groups of COGs with `anvi-summarize`. First add a default collection
-
-```
-anvi-script-add-default-collection -p METHANO/Methanothermobacter_Pan-PAB.db
-```
+Summarize the pangenome groups and the bins that were made for different groups of COGs with `anvi-summarize`. 
 
 Then add the bins in the interactive mode that you are interested in exploring.
 
