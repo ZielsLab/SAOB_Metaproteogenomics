@@ -32,14 +32,9 @@ for file in *-reformatted.fasta; do
 done
 ```
 
-The GFF files from Metapathways from the 3 Methanothermobacter SAOB study genomes are then parsed with the `metapathways-tsv-to-anvio.py` script with:
+The GFF files from Metapathways from the 3 Methanothermobacter SAOB study genomes are then parsed with the `metapathways-tsv-to-anvio.py` script after selecting for calls made with Prodigal. Then create separate a separate anvi'o table with `awk -F "\t" '{print $9"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8}' bin4_1-annotation-table.tsv > bin4_1-anvio-table.tsv` 
 
-```
-for file in *.annot.gff; 
-    do name=$(basename $file .annot.gff); 
-    python3 ../../../scripts/metapathways-tsv-to-anvio.py $file --anvio $name-anvio-table.tsv --annotation $name-annotation-table.tsv; 
-done
-```
+There was massive problems when trying to create separate pandas dataframes and exporting based on just subsetting columns, this might be from parsing the GFF format. 
 
 These can then be created into contigs databases with the `--external-gene-calls` flag: 
 
@@ -173,3 +168,9 @@ anvi-summarize -p METHANO/Methanothermobacter_Pan-PAN.db \
                  -C DEFAULT \
                  -o Methanothermobacteraceae_groups
 ```
+
+### Quick exploration 
+
+Specifically interested in where the formate dehydrogenases of bin4.2 fall since it's highly expressed after mcr. Had to have simple gene caller IDs so the `annoation-table.tsv` file for each bin produced from the `metapathways` python parser has the simple gene caller ID and the original locus tag. 
+
+Loci of interest: `bin4_2_5_495`, `bin4_2_5_496`, and `bin4_2_5_497`. So `grep -A 5 'bin4_2_5_495' bin4_2-annotation-table.tsv` which starts at gene caller ID 1540 and goes through 1542, so `grep bin4_2 Methanothermobacter_Pan_gene_clusters_summary.txt | grep -A 5 -w '1540'`
