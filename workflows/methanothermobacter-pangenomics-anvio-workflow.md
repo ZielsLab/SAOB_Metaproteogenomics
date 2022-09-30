@@ -147,3 +147,29 @@ anvi-display-pan -p METHANO/Methanothermobacter_Pan-PAN.db -g METHANO_GENOMES.db
 ```
 
 Then start your browser on your local computer and type the address `http://localhost:8080` 
+
+Colors: 
+- Orange: F26B38
+- Blue: 2F9599
+- Yellow: F7DB4F
+
+Can also save and load states so don't have to redo colors and bin groups. 
+
+## Splitting the pangenome 
+
+Summarize the pangenome groups and the bins that were made for different groups of COGs with `anvi-summarize`. First add a default collection
+
+```
+anvi-script-add-default-collection -p METHANO/Methanothermobacter_Pan-PAB.db
+```
+
+Then add the bins in the interactive mode that you are interested in exploring.
+
+Then summarize:
+
+```
+anvi-summarize -p METHANO/Methanothermobacter_Pan-PAN.db \
+                 -g METHANO_GENOMES.db \
+                 -C DEFAULT \
+                 -o Methanothermobacteraceae_groups
+```
