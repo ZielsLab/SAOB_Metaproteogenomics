@@ -4,6 +4,9 @@ library(PNWColors)
 library(MetBrewer)
 library(Peptides)
 library(ggpubr)
+library(cowplot)
+library(gridExtra)
+library(patchwork)
 
 # Set Paths
 
@@ -201,7 +204,7 @@ lfq <- lfq %>%
                       ymax = mag_lab_prot + mag_lab_prot_std, group = MAG, fill = MAG), alpha = 0.25) +
       scale_color_manual(values = pal, labels=c("All other groups", "DTU068", "METHANO1", "METHANO2")) + 
       scale_fill_manual(values = pal) + 
-      ylab("Labelled protein conc. (mg 13C-prot/L)") + 
+      ylab("Labelled protein conc. \n (mg 13C-prot/L)") + 
       xlab("Time (hr)") + 
       guides(color=guide_legend("Group"), fill = "none") +
       theme_pubr() +
@@ -282,7 +285,7 @@ lfq <- lfq %>%
         left_join(mag_names) %>% 
         ggplot(aes(x= prep_id, y= fct_rev(specific_name))) +
         geom_tile(aes(fill = log10(n_peptides))) + 
-        scale_fill_gradientn(name = "Number of Proteins \nLabelled (log10)", colours=rev(pnw_palette("Lake", 1000))) + 
+        scale_fill_gradientn(name = "Number of Peptides \nLabelled (log10)", colours=rev(pnw_palette("Lake", 1000))) + 
         facet_grid(cols = vars(time_hr), scales = "free_x", labeller = labeller(time_hr = time_labels)) + 
         theme_pubr() +
         theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"), legend.position="bottom")
@@ -292,7 +295,7 @@ lfq <- lfq %>%
         left_join(mag_names) %>% 
         ggplot(aes(x= prep_id, y= fct_rev(specific_name))) +
         geom_tile(aes(fill = log10(n_peptides))) + 
-        scale_fill_gradientn(name = "Number of Proteins \nLabelled (log10)", colours=rev(pnw_palette("Lake", 1000))) + 
+        scale_fill_gradientn(name = "Number of Peptides \nLabelled (log10)", colours=rev(pnw_palette("Lake", 1000))) + 
         facet_grid(cols = vars(time_hr), scales = "free_x", labeller = labeller(time_hr = time_labels)) + 
         theme_pubr() +
         theme(axis.title.x=element_blank(), axis.title.y=element_blank(), axis.text.x = element_blank(), axis.text.y = element_text(face = "bold"), strip.text = element_text(size=12, face="bold"), legend.position="bottom")
@@ -335,3 +338,8 @@ lfq <- lfq %>%
       
       ggsave("figures/SIP_MAG_incorporation_labels.pdf", mag_incorporation_plot_labels, width=20, height=15, units=c("cm"))
       
+# combine top 10 active MAGs with SIP incorporation plot
+
+mag_activity_incorporation_grid_arranged <- plot_grid(top_mag_activity_lr, mag_incorporation_plot_labels, labels=c("", "C"), ncol=1, rel_heights=c(1.3,1))
+
+ggsave("figures/SIP_MAG_activity_incorporatoin_combined_Grid.png", mag_activity_incorporation_grid_arranged, units=c("cm"), width=25, height=30)

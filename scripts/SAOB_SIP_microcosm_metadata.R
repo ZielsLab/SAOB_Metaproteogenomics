@@ -79,7 +79,7 @@ gas_plot <- gas_table %>%
   geom_line(aes(color=ratio), size=2) +
   scale_color_manual(values = c("#35b779"), labels = c("\n %13C-CO2 : %13C-CH4")) + 
   xlab("Time (hrs)") +
-  ylab("Ratio of %13C-CO2 : %13C-CH4, \n or fraction of CH4 from SAO pathway (%)") + 
+  ylab("Ratio of %13C-CO2 : %13C-CH4 (%)") + 
   theme_pubr() +
   theme(axis.title.y = element_text(size=10, face="bold"), axis.title.x=element_text(size=15, face="bold"), legend.position="none")
 gas_plot
