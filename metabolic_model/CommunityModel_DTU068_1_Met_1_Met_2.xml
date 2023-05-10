@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:fbc="http://www.sbml.org/sbml/level3/version1/fbc/version2" sboTerm="SBO:0000624" level="3" version="1" fbc:required="false">
+  <model metaid="meta_model" id="model" fbc:strict="true">
+    <listOfUnitDefinitions>
+      <unitDefinition id="mmol_per_gDW_per_hr">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="-3" multiplier="1"/>
+          <unit kind="gram" exponent="-1" scale="0" multiplier="1"/>
+          <unit kind="second" exponent="-1" scale="0" multiplier="3600"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="DTU068_1c" constant="true"/>
+      <compartment id="e" constant="true"/>
+      <compartment id="DTU068_1i" constant="true"/>
+      <compartment id="Met_1c" constant="true"/>
+      <compartment id="Met_1i" constant="true"/>
+      <compartment id="Met_2c" constant="true"/>
+      <compartment id="Met_2i" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="M_ac_DTU068_1c" name="Acetate" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="C2H3O2"/>
+      <species id="M_atp_DTU068_1c" name="ATP" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-4" fbc:chemicalFormula="C10H12N5O13P3"/>
+      <species id="M_actp_DTU068_1c" name="Acetyl phosphate" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="C2H3O5P"/>
+      <species id="M_adp_DTU068_1c" name="ADP" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-3" fbc:chemicalFormula="C10H12N5O10P2"/>
+      <species id="M_accoa_DTU068_1c" name="Acetyl-CoA" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-4" fbc:chemicalFormula="C23H34N7O17P3S"/>
+      <species id="M_pi_DTU068_1c" name="xylose-D" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="HO4P"/>
+      <species id="M_coa_DTU068_1c" name="Coenzyme A" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-4" fbc:chemicalFormula="C21H32N7O16P3S"/>
+      <species id="M_co_DTU068_1c" name="Carbon monoxide" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="CO"/>
+      <species id="M_mecfsp_DTU068_1c" name="Methylcorrinoid iron sulfur protein" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C20H3CoN4R21"/>
+      <species id="M_cfesp_DTU068_1c" name="Corrinoid Iron sulfur protein" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="C19CoN4R21"/>
+      <species id="M_h_DTU068_1c" name="H+" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="1" fbc:chemicalFormula="H"/>
+      <species id="M_co2_DTU068_1c" name="CO2" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="CO2"/>
+      <species id="M_fdred_DTU068_1c" name="Ferredoxin (reduced) 2[4Fe-4S]" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="Fe8S8X"/>
+      <species id="M_h2o_DTU068_1c" name="H2O" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="H2O"/>
+      <species id="M_fdox_DTU068_1c" name="Ferredoxin (oxidized) 2[4Fe-4S]" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="Fe8S8X"/>
+      <species id="M__5mthf_DTU068_1c" name="5-Methyltetrahydrofolate" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="C20H24N7O6"/>
+      <species id="M_thf_DTU068_1c" name="5,6,7,8-Tetrahydrofolate" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="C19H21N7O6"/>
+      <species id="M_co2_e" name="CO2" compartment="e" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="CO2"/>
+      <species id="M_h_DTU068_1i" name="H+" compartment="DTU068_1i" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="1" fbc:chemicalFormula="H"/>
+      <species id="M_h_e" name="H+" compartment="e" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="1" fbc:chemicalFormula="H"/>
+      <species id="M_mlthf_DTU068_1c" name="5,10-Methylenetetrahydrofolate" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="C20H21N7O6"/>
+      <species id="M_for_e" name="Formate" compartment="e" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="CHO2"/>
+      <species id="M_h2_e" name="Hydrogen" compartment="e" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="H2"/>
+      <species id="M_methf_DTU068_1c" name="5,10-Methenyltetrahydrofolate" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="C20H20N7O6"/>
+      <species id="M_nadh_DTU068_1c" name="Nicotinamide adenine dinucleotide - reduced" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="C21H27N7O14P2"/>
+      <species id="M_nad_DTU068_1c" name="Nicotinamide adenine dinucleotide" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="C21H26N7O14P2"/>
+      <species id="M__10fthf_DTU068_1c" name="10-Formyltetrahydrofolate" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="C20H21N7O7"/>
+      <species id="M_for_DTU068_1c" name="Formate" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="CHO2"/>
+      <species id="M_h2_DTU068_1c" name="Hydrogen" compartment="DTU068_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="H2"/>
+      <species id="M_atp_COMM" compartment="e" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0"/>
+      <species id="M_ac_e" name="Acetate" compartment="e" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="C2H3O2"/>
+      <species id="M_h2o_e" name="H2O" compartment="e" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="H2O"/>
+      <species id="M_co2_Met_1c" name="CO2" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="CO2"/>
+      <species id="M_fdred_Met_1c" name="Ferredoxin (reduced) 2[4Fe-4S]" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="Fe8S8X"/>
+      <species id="M_h_Met_1c" name="H+" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="1" fbc:chemicalFormula="H"/>
+      <species id="M_mfr_b_Met_1c" name="Methanofuran b" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="C34H44N6O14R"/>
+      <species id="M_fdox_Met_1c" name="Ferredoxin (oxidized) 2[4Fe-4S]" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="Fe8S8X"/>
+      <species id="M_h2o_Met_1c" name="H2O" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="H2O"/>
+      <species id="M_formmfr_b_Met_1c" name="Formylmethanofuran b" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="C35H43N6O15R"/>
+      <species id="M_h4spt_Met_1c" name="Tetrahydrosarcinapterin" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C35H48N7O19P1"/>
+      <species id="M_formh4spt_Met_1c" name="Formyltetrahydrosarcinapterin" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C36H48N7O20P1"/>
+      <species id="M_menylh4spt_Met_1c" name="Methenyl-tetrahydrosarcinapterin" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="1" fbc:chemicalFormula="C36H47N7O19P1"/>
+      <species id="M_h2_Met_1c" name="Hydrogen" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="H2"/>
+      <species id="M_f420_2_Met_1c" name="Coenzyme ferredoxin 420-2 (oxidized)" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C29H34N5O18P"/>
+      <species id="M_f420_2h2_Met_1c" name="Coenzyme ferredoxin 420-2 (reduced)" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C29H36O18N5P1"/>
+      <species id="M_mleneh4spt_Met_1c" name="N5,N10-methylee-5,6,7,8-tetrahydromethanopterin" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C36H48N7O19P1"/>
+      <species id="M_mh4spt_Met_1" name="N5-methyl-tetrahydrosarcinapterin" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C36H50N7O19P1"/>
+      <species id="M_h_Met_1i" name="H+" compartment="Met_1i" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="1" fbc:chemicalFormula="H"/>
+      <species id="M_com_Met_1c" name="Coenzyme m" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C2H5O3S2"/>
+      <species id="M_mcom_Met_1c" name="Methylcoenzyme m" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C3O3S2H7"/>
+      <species id="M_ch4_Met_1c" name="Methane" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="CH4"/>
+      <species id="M_cob_Met_1c" name="Conenzyme B" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C11H19N1O7P1S1"/>
+      <species id="M_hsfd_Met_1c" name="Heterodisulfide" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C13H22N1O10P1S3"/>
+      <species id="M_adp_Met_1c" name="ADP" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-3" fbc:chemicalFormula="C10H12N5O10P2"/>
+      <species id="M_pi_Met_1c" name="xylose-D" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="HO4P"/>
+      <species id="M_atp_Met_1c" name="ATP" compartment="Met_1c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-4" fbc:chemicalFormula="C10H12N5O13P3"/>
+      <species id="M_ch4_e" name="Methane" compartment="e" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="CH4"/>
+      <species id="M_for_Met_2c" name="Formate" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="CHO2"/>
+      <species id="M_h_Met_2c" name="H+" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="1" fbc:chemicalFormula="H"/>
+      <species id="M_f420_2_Met_2c" name="Coenzyme ferredoxin 420-2 (oxidized)" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C29H34N5O18P"/>
+      <species id="M_co2_Met_2c" name="CO2" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="CO2"/>
+      <species id="M_f420_2h2_Met_2c" name="Coenzyme ferredoxin 420-2 (reduced)" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C29H36O18N5P1"/>
+      <species id="M_fdred_Met_2c" name="Ferredoxin (reduced) 2[4Fe-4S]" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="Fe8S8X"/>
+      <species id="M_mfr_b_Met_2c" name="Methanofuran b" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-1" fbc:chemicalFormula="C34H44N6O14R"/>
+      <species id="M_fdox_Met_2c" name="Ferredoxin (oxidized) 2[4Fe-4S]" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="Fe8S8X"/>
+      <species id="M_h2o_Met_2c" name="H2O" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="H2O"/>
+      <species id="M_formmfr_b_Met_2c" name="Formylmethanofuran b" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="C35H43N6O15R"/>
+      <species id="M_h4spt_Met_2c" name="Tetrahydrosarcinapterin" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C35H48N7O19P1"/>
+      <species id="M_formh4spt_Met_2c" name="Formyltetrahydrosarcinapterin" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C36H48N7O20P1"/>
+      <species id="M_menylh4spt_Met_2c" name="Methenyl-tetrahydrosarcinapterin" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="1" fbc:chemicalFormula="C36H47N7O19P1"/>
+      <species id="M_h2_Met_2c" name="Hydrogen" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="H2"/>
+      <species id="M_mleneh4spt_Met_2c" name="N5,N10-methylee-5,6,7,8-tetrahydromethanopterin" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C36H48N7O19P1"/>
+      <species id="M_mh4spt_Met_2" name="N5-methyl-tetrahydrosarcinapterin" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C36H50N7O19P1"/>
+      <species id="M_h_Met_2i" name="H+" compartment="Met_2i" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="1" fbc:chemicalFormula="H"/>
+      <species id="M_com_Met_2c" name="Coenzyme m" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C2H5O3S2"/>
+      <species id="M_mcom_Met_2c" name="Methylcoenzyme m" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C3O3S2H7"/>
+      <species id="M_ch4_Met_2c" name="Methane" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="CH4"/>
+      <species id="M_cob_Met_2c" name="Conenzyme B" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C11H19N1O7P1S1"/>
+      <species id="M_hsfd_Met_2c" name="Heterodisulfide" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="0" fbc:chemicalFormula="C13H22N1O10P1S3"/>
+      <species id="M_adp_Met_2c" name="ADP" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-3" fbc:chemicalFormula="C10H12N5O10P2"/>
+      <species id="M_pi_Met_2c" name="xylose-D" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-2" fbc:chemicalFormula="HO4P"/>
+      <species id="M_atp_Met_2c" name="ATP" compartment="Met_2c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:charge="-4" fbc:chemicalFormula="C10H12N5O13P3"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter sboTerm="SBO:0000626" id="cobra_default_lb" value="-1000" constant="true"/>
+      <parameter sboTerm="SBO:0000626" id="cobra_default_ub" value="1000" constant="true"/>
+      <parameter sboTerm="SBO:0000626" id="cobra_0_bound" value="0" constant="true"/>
+      <parameter sboTerm="SBO:0000626" id="minus_inf" value="-INF" constant="true"/>
+      <parameter sboTerm="SBO:0000626" id="plus_inf" value="INF" constant="true"/>
+      <parameter sboTerm="SBO:0000625" id="R_EX_ac_lower_bound" value="-1" units="mmol_per_gDW_per_hr" constant="true"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="R_DTU068_1_ACK" name="DTU068_1: Acetate kinase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_ac_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_atp_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_actp_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_adp_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_PTA" name="DTU068_1: Phosphotransacetylase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_coa_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_actp_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_accoa_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_pi_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_ACS" name="DTU068_1: Acetyl-CoA synthase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_cfesp_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_accoa_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mecfsp_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_coa_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_CODH" name="DTU068_1: Carbon monoxide dehydrogenase / acetyl-CoA synthase 2" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2o_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdox_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_co_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdred_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="2" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_AcsE" name="DTU068_1: Methyltetrahydrofolate:corrinoid/iron-sulfur protein methyltransferase (MeTr)" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_thf_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mecfsp_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M__5mthf_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_cfesp_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_MetF_MetV" name="DTU068_1: MetF + MetV" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_co2_e" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1i" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_h_e" stoichiometry="1" constant="true"/>
+          <speciesReference species="M__5mthf_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_mlthf_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_for_e" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="5" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_HysAB" name="DTU068_1: HysAB" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M__5mthf_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1i" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_h_e" stoichiometry="2" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2_e" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mlthf_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="5" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_FoID_MTHFD_1" name="DTU068_1: Methylenetetrahydrofolate dehydrogenase NAD" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_nad_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mlthf_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_methf_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_nadh_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_FoID_MTHFD_2" name="DTU068_1: Methenyltetrahydrofolate cyclohydrolase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2o_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_methf_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M__10fthf_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_Fhs__40__FTHFL__41__" name="DTU068_1: Formate-tetrahydrofolate ligase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M__10fthf_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_adp_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_pi_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_for_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_atp_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_thf_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_Fdh_NuoEF" name="DTU068_1: Electron Confurcating Formate Dehydrogenase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_nad_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdox_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_for_DTU068_1c" stoichiometry="2" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_nadh_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdred_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_co2_DTU068_1c" stoichiometry="2" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_ECH" name="DTU068_1: Energy conserving hydrogenase" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_fdred_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="4" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdox_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1i" stoichiometry="2" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_HYDABC" name="DTU068_1: HydABC" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_fdred_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_nadh_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="3" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2_DTU068_1c" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_nad_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdox_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_NiFeH2ASE" name="DTU068_1: NiFe Hydrogenase" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_nadh_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_nad_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_ATPS4r" name="DTU068_1: ATP Synthase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_adp_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_pi_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1i" stoichiometry="4" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_atp_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="3" constant="true"/>
+          <speciesReference species="M_h2o_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_ATP_Hydrolysis" name="DTU068_1: ATP Hydrolysis" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_atp_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h2o_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_atp_COMM" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_adp_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_pi_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_EX_H2" name="DTU068_1: EX - H2" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_EX_Acetate" name="DTU068_1: Transport - Acetate" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_ac_e" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_ac_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_EX_Protons" name="DTU068_1: Transport - Protons" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_EX_h2o" name="DTU068_1: Transport - h2o" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2o_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2o_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_EX_co2" name="DTU068_1: Transport - co2" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_co2_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_DTU068_1_EX_for" name="DTU068_1: Transport - for" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_for_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_for_DTU068_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_DTU068_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_FwdA__45__H" name="Met_1: Formylmethanofuran Dehydrogenase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_co2_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdred_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mfr_b_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_fdox_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h2o_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_formmfr_b_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_Ftr" name="Met_1: Formylmethanofuran-Tetrahydromethanopterin N-Formyltransferase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h4spt_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_formmfr_b_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_formh4spt_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mfr_b_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_Mch" name="Met_1: Mch" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_formh4spt_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_menylh4spt_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h2o_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_FrhABG" name="Met_1: FrhABG" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_f420_2_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_f420_2h2_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_Mtd" name="Met_1: Mtd" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_f420_2h2_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_menylh4spt_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_mleneh4spt_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_f420_2_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_Mer" name="Met_1: Mer" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_f420_2h2_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mleneh4spt_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_mh4spt_Met_1" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_f420_2_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_MtrA__45__H" name="Met_1: MtrA-H" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_com_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_1c" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_mh4spt_Met_1" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_Met_1i" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_mcom_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h4spt_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_McrABCDG" name="Met_1: McrABCDG" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_cob_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mcom_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_ch4_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_hsfd_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_MvhADG__43__HdrABC" name="Met_1: HDR" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2_Met_1c" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_hsfd_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdox_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_Met_1c" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_cob_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_com_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdred_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_ECH" name="Met_1: Energy conserving hydrogenase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_fdred_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_1c" stoichiometry="4" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdox_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_1i" stoichiometry="2" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_ATPS4r" name="Met_1: ATP Synthase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_adp_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_pi_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_1i" stoichiometry="4" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_atp_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_1c" stoichiometry="3" constant="true"/>
+          <speciesReference species="M_h2o_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_ATP_Hydrolysis" name="Met_1: ATP Hydrolysis" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_atp_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h2o_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_pi_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_1c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_atp_COMM" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_EX_H2" name="Met_1: EX - H2" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_EX_Protons" name="Met_1: Transport - Protons" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_EX_ch4" name="Met_1: EX - ch4" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_ch4_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_ch4_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_EX_h2o" name="Met_1: EX - h2o" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2o_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2o_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_1_EX_co2" name="Met_1: EX - co2" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_co2_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_Met_1c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_FdhAB" name="Met_2: FdhAB" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_for_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_f420_2_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_f420_2h2_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_FwdA__45__H" name="Met_2: Formylmethanofuran Dehydrogenase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_fdred_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mfr_b_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_co2_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_fdox_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h2o_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_formmfr_b_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_Ftr" name="Met_2: Formylmethanofuran-Tetrahydromethanopterin N-Formyltransferase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h4spt_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_formmfr_b_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_formh4spt_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mfr_b_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_Mch" name="Met_2: Mch" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_formh4spt_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_menylh4spt_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h2o_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_FrhABG" name="Met_2: FrhABG" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_f420_2_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_f420_2h2_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_Mtd" name="Met_2: Mtd" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_f420_2h2_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_menylh4spt_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_mleneh4spt_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_f420_2_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_Mer" name="Met_2: Mer" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_f420_2h2_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mleneh4spt_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_mh4spt_Met_2" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_f420_2_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_MtrA__45__H" name="Met_2: MtrA-H" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_com_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2c" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_mh4spt_Met_2" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_Met_2i" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_mcom_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h4spt_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_McrABCDG" name="Met_2: McrABCDG" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_cob_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_mcom_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_ch4_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_hsfd_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_MvhADG__43__HdrABC" name="Met_2: HDR" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2_Met_2c" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_hsfd_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdox_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_Met_2c" stoichiometry="2" constant="true"/>
+          <speciesReference species="M_cob_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_com_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdred_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_ECH" name="Met_2: Energy conserving hydrogenase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_fdred_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2c" stoichiometry="4" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_fdox_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2i" stoichiometry="2" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_ATPS4r" name="Met_2: ATP Synthase" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_adp_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_pi_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2i" stoichiometry="4" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_atp_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2c" stoichiometry="3" constant="true"/>
+          <speciesReference species="M_h2o_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_ATP_Hydrolysis" name="Met_2: ATP Hydrolysis" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_atp_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h2o_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_pi_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_atp_COMM" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_EX_H2" name="Met_2: EX - H2" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_EX_Protons" name="Met_2: Transport - Protons" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_EX_ch4" name="Met_2: EX - ch4" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_ch4_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_ch4_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_EX_h2o" name="Met_2: EX - h2o" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2o_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2o_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_EX_co2" name="Met_2: EX - co2" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_co2_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_Met_2_EX_for" name="Met_2: EX - for" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_for_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_for_Met_2c" stoichiometry="1" constant="true"/>
+          <speciesReference species="M_h_Met_2c" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+      <reaction id="R_EX_ac" name="Exchange - Acetate" reversible="true" fast="false" fbc:lowerFluxBound="R_EX_ac_lower_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_ac_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+      <reaction id="R_EX_h" name="Exchange - h" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+      <reaction id="R_EX_H2" name="Exchange - H2" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+      <reaction id="R_EX_for" name="Exchange - for" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_for_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+      <reaction id="R_EX_co2" name="Exchange - co2" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_co2_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+      <reaction id="R_EX_h2o" name="Exchange - h2o" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_h2o_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+      <reaction id="R_EX_ch4" name="Exchange - ch4" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_ch4_e" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+      <reaction id="R_EX_ATP_COMM" name="Exchange - Community ATP" reversible="false" fast="false" fbc:lowerFluxBound="cobra_0_bound" fbc:upperFluxBound="cobra_default_ub">
+        <listOfReactants>
+          <speciesReference species="M_atp_COMM" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+    </listOfReactions>
+    <fbc:listOfObjectives fbc:activeObjective="obj">
+      <fbc:objective fbc:id="obj" fbc:type="maximize">
+        <fbc:listOfFluxObjectives>
+          <fbc:fluxObjective fbc:reaction="R_EX_ATP_COMM" fbc:coefficient="1"/>
+        </fbc:listOfFluxObjectives>
+      </fbc:objective>
+    </fbc:listOfObjectives>
+  </model>
+</sbml>
